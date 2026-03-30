@@ -1,0 +1,1296 @@
+
+
+
+Q1. Write a Java program to display all the alphabets between ‘A’ to ‘Z’ after every 2 
+seconds. Change the priority of the thread to 8.
+
+short and easy without skipping any line
+
+Here is a short and complete Java program that prints A–Z with a 2-second delay and sets thread priority to 8:
+
+class AlphabetThread extends Thread
+{
+    public void run()
+    {
+        for(char ch = 'A'; ch <= 'Z'; ch++)
+        {
+            System.out.println(ch);
+            try
+            {
+                Thread.sleep(2000); // 2 seconds delay
+            }
+            catch(Exception e)
+            {
+                System.out.println(e);
+            }
+        }
+    }
+}
+
+class Main
+{
+    public static void main(String args[])
+    {
+        AlphabetThread t = new AlphabetThread();
+
+        t.setPriority(8); // set priority to 8
+
+        t.start(); // start thread
+    }
+}
+Key Points:
+Thread.sleep(2000) → pauses for 2 seconds
+
+setPriority(8) → changes thread priority
+
+Loop prints characters from 'A' to 'Z'
+
+If you want, I can also give an even more minimal version using Runnable.
+
+
+Q2. Write a java program to read ‘N’ names of your friends, store it into HashSet and 
+display them in ascending order.
+
+short and easy without skipping any line
+
+Here is a short and complete Java program to store N names in a HashSet and display them in ascending order:
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of friends: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        HashSet<String> hs = new HashSet<String>();
+
+        System.out.println("Enter names:");
+
+        for(int i = 0; i < n; i++)
+        {
+            String name = sc.nextLine();
+            hs.add(name);
+        }
+
+        TreeSet<String> ts = new TreeSet<String>(hs);
+
+        System.out.println("Names in ascending order:");
+
+        for(String s : ts)
+        {
+            System.out.println(s);
+        }
+    }
+}
+Key Points:
+HashSet → stores unique names
+
+TreeSet → automatically sorts in ascending order
+
+Enhanced for loop → used to display names
+
+If needed, I can give a version using ArrayList or without TreeSet.
+
+
+Q3. Write a Java program to create LinkedList of String objects and perform the 
+following:  
+i. Add element at the end of the list  
+ii. Display the contents of list in reverse order 
+
+short and easy without skipping any line
+
+Here is a short and complete Java program using LinkedList:
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        LinkedList<String> list = new LinkedList<String>();
+
+        System.out.print("Enter number of elements: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Enter elements:");
+
+        for(int i = 0; i < n; i++)
+        {
+            String str = sc.nextLine();
+            list.addLast(str); // add at end
+        }
+
+        System.out.println("List in reverse order:");
+
+        Iterator<String> it = list.descendingIterator();
+
+        while(it.hasNext())
+        {
+            System.out.println(it.next());
+        }
+    }
+}
+Key Points:
+addLast() → adds element at end
+
+descendingIterator() → traverses list in reverse order
+
+LinkedList used to store String objects
+
+If you want, I can also show a version using Collections.reverse().
+
+
+Q4. Write a Java program to store city names and their STD codes using an appropriate 
+collection and perform following operations:  
+i. Add a new city and its code (No duplicates)  
+ii. Search for a city name and display the code.  
+
+short and easy without skipping any line
+
+Here is a short and complete Java program using HashMap:
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        HashMap<String, String> map = new HashMap<String, String>();
+
+        System.out.print("Enter number of cities: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        for(int i = 0; i < n; i++)
+        {
+            System.out.print("Enter city name: ");
+            String city = sc.nextLine();
+
+            if(map.containsKey(city))
+            {
+                System.out.println("City already exists");
+                i--;
+            }
+            else
+            {
+                System.out.print("Enter STD code: ");
+                String code = sc.nextLine();
+                map.put(city, code);
+            }
+        }
+
+        System.out.print("Enter city to search: ");
+        String searchCity = sc.nextLine();
+
+        if(map.containsKey(searchCity))
+        {
+            System.out.println("STD Code: " + map.get(searchCity));
+        }
+        else
+        {
+            System.out.println("City not found");
+        }
+    }
+}
+Key Points:
+HashMap → stores city (key) and STD code (value)
+
+containsKey() → prevents duplicates & helps in search
+
+put() → adds data
+
+get() → retrieves STD code
+
+If needed, I can also give a version using TreeMap (sorted cities).
+
+
+Q5. Write a Java program to accept ‘n’ integers from the user and store them in a collection. 
+Display them in the sorted order. The collection should not accept duplicate elements. 
+(Use a suitable collection). Search for a particular element using predefined search 
+method in the Collection framework. 
+
+short and easy without skipping any line
+
+Here is a short and complete Java program using TreeSet (sorted + no duplicates):
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        TreeSet<Integer> set = new TreeSet<Integer>();
+
+        System.out.print("Enter number of elements: ");
+        int n = sc.nextInt();
+
+        System.out.println("Enter integers:");
+
+        for(int i = 0; i < n; i++)
+        {
+            int num = sc.nextInt();
+            set.add(num); // no duplicates, auto sorted
+        }
+
+        System.out.println("Sorted elements:");
+
+        for(int x : set)
+        {
+            System.out.println(x);
+        }
+
+        System.out.print("Enter element to search: ");
+        int key = sc.nextInt();
+
+        if(set.contains(key))
+        {
+            System.out.println("Element found");
+        }
+        else
+        {
+            System.out.println("Element not found");
+        }
+    }
+}
+Key Points:
+TreeSet → automatically sorts & removes duplicates
+
+add() → inserts elements
+
+contains() → predefined search method
+
+Enhanced for loop → displays sorted elements
+
+If you want, I can also show a version using ArrayList + Collections.sort().
+
+
+Q6. Write a program in which thread sleep for 2 seconds in the loop and displays numbers 
+in reverse order from 100 to 1. Change the name of thread to “reverse order”. 
+
+short and easy without skipping any line
+
+Here is a short and complete Java program:
+
+class ReverseThread extends Thread
+{
+    public void run()
+    {
+        for(int i = 100; i >= 1; i--)
+        {
+            System.out.println(i);
+            try
+            {
+                Thread.sleep(2000); // 2 seconds
+            }
+            catch(Exception e)
+            {
+                System.out.println(e);
+            }
+        }
+    }
+}
+
+class Main
+{
+    public static void main(String args[])
+    {
+        ReverseThread t = new ReverseThread();
+
+        t.setName("reverse order"); // change thread name
+
+        t.start(); // start thread
+    }
+}
+Key Points:
+Loop runs from 100 to 1 (reverse order)
+
+Thread.sleep(2000) → 2-second delay
+
+setName("reverse order") → changes thread name
+
+If needed, I can show how to print the thread name while executing.
+
+
+Q7. Write a java program to define a thread for printing text on output screen for ‘n’ number 
+times. Create 3 threads and run them. Pass the text ‘n’ parameters to the thread 
+constructor.  
+  Example:  
+i. First thread prints “COVID19” 10 times.  
+ii. Second thread prints “LOCKDOWN2020” 20 times. 
+iii. Third thread prints “VACCINATED2021” 30 times. 
+
+short and easy without skipping any line
+
+Here is a short and complete Java program:
+
+class MyThread extends Thread
+{
+    String text;
+    int n;
+
+    MyThread(String text, int n)
+    {
+        this.text = text;
+        this.n = n;
+    }
+
+    public void run()
+    {
+        for(int i = 1; i <= n; i++)
+        {
+            System.out.println(text);
+        }
+    }
+}
+
+class Main
+{
+    public static void main(String args[])
+    {
+        MyThread t1 = new MyThread("COVID19", 10);
+        MyThread t2 = new MyThread("LOCKDOWN2020", 20);
+        MyThread t3 = new MyThread("VACCINATED2021", 30);
+
+        t1.start();
+        t2.start();
+        t3.start();
+    }
+}
+Key Points:
+Constructor receives text and n
+
+Loop prints text n times
+
+3 threads created and executed using start()
+
+If you want, I can also show how to control execution order (using join()).
+
+
+Q8. Write a java program to read ‘n’ names of your friends, store it into linked list, also 
+display contents using ListIterator interface.
+short and easy without skipping any line
+
+Here is a short and complete Java program using LinkedList and ListIterator:
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        LinkedList<String> list = new LinkedList<String>();
+
+        System.out.print("Enter number of friends: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Enter names:");
+
+        for(int i = 0; i < n; i++)
+        {
+            String name = sc.nextLine();
+            list.add(name);
+        }
+
+        System.out.println("List of friends:");
+
+        ListIterator<String> it = list.listIterator();
+
+        while(it.hasNext())
+        {
+            System.out.println(it.next());
+        }
+    }
+}
+Key Points:
+LinkedList → stores names
+
+listIterator() → returns ListIterator
+
+hasNext() & next() → used to display elements
+
+If needed, I can also show reverse traversal using ListIterator.
+
+
+Q9. Write a JSP program to check whether given number is Perfect or not.
+
+short and easy without skipping any line
+
+Here is a short and complete JSP program to check whether a number is Perfect or not:
+
+<%@ page language="java" %>
+
+<html>
+<body>
+
+<form method="post">
+    Enter Number: <input type="text" name="num">
+    <input type="submit" value="Check">
+</form>
+
+<%
+    String n = request.getParameter("num");
+
+    if(n != null)
+    {
+        int num = Integer.parseInt(n);
+        int sum = 0;
+
+        for(int i = 1; i <= num/2; i++)
+        {
+            if(num % i == 0)
+            {
+                sum = sum + i;
+            }
+        }
+
+        if(sum == num)
+        {
+            out.println("Perfect Number");
+        }
+        else
+        {
+            out.println("Not a Perfect Number");
+        }
+    }
+%>
+
+</body>
+</html>
+Key Points:
+Perfect number → sum of factors (excluding itself) equals number
+
+Example: 6 → 1 + 2 + 3 = 6
+
+Uses JSP scriptlet for logic
+
+If you want, I can also give a version using Servlet instead of JSP.
+
+
+Q10. Create a java program to store city names and their STD codes using an appropriate 
+collection. Do the following operations: 
+i. Add a new city and its code. (No duplicate city) 
+ii. Search for a city name and display the code. 
+
+short and easy without skipping any line
+
+Here is a short and complete Java program using HashMap:
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        HashMap<String, String> map = new HashMap<String, String>();
+
+        System.out.print("Enter number of cities: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        for(int i = 0; i < n; i++)
+        {
+            System.out.print("Enter city name: ");
+            String city = sc.nextLine();
+
+            if(map.containsKey(city))
+            {
+                System.out.println("City already exists");
+                i--;
+            }
+            else
+            {
+                System.out.print("Enter STD code: ");
+                String code = sc.nextLine();
+                map.put(city, code);
+            }
+        }
+
+        System.out.print("Enter city to search: ");
+        String search = sc.nextLine();
+
+        if(map.containsKey(search))
+        {
+            System.out.println("STD Code: " + map.get(search));
+        }
+        else
+        {
+            System.out.println("City not found");
+        }
+    }
+}
+Key Points:
+HashMap → stores city (key) and STD code (value)
+
+Prevent duplicates using containsKey()
+
+Search using get() method
+
+If you notice, this is the same logic as Q4 (only wording changed).
+
+
+Q11. Write a JSP program to calculate sum of digit of a given number. Display sum in Red 
+Color.
+
+short and easy without skipping any line
+
+Here is a short and complete JSP program to calculate sum of digits and display it in red color:
+
+<%@ page language="java" %>
+
+<html>
+<body>
+
+<form method="post">
+    Enter Number: <input type="text" name="num">
+    <input type="submit" value="Calculate">
+</form>
+
+<%
+    String n = request.getParameter("num");
+
+    if(n != null)
+    {
+        int num = Integer.parseInt(n);
+        int sum = 0;
+
+        while(num > 0)
+        {
+            int digit = num % 10;
+            sum = sum + digit;
+            num = num / 10;
+        }
+
+        out.println("<font color='red'>Sum of digits = " + sum + "</font>");
+    }
+%>
+
+</body>
+</html>
+Key Points:
+% 10 → extracts last digit
+
+/ 10 → removes last digit
+
+<font color='red'> → displays result in red
+
+If you want, I can give a version using CSS instead of <font> (modern approach).
+
+
+Q12. Write a java program to display name and priority of a Thread. Change the priority of 
+thread to 7. 
+
+short and easy without skipping any line
+
+Here is a short and complete Java program:
+
+class MyThread extends Thread
+{
+    public void run()
+    {
+        System.out.println("Thread Name: " + Thread.currentThread().getName());
+        System.out.println("Thread Priority: " + Thread.currentThread().getPriority());
+    }
+}
+
+class Main
+{
+    public static void main(String args[])
+    {
+        MyThread t = new MyThread();
+
+        t.setName("MyThread"); // set thread name
+        t.setPriority(7); // change priority to 7
+
+        t.start(); // start thread
+    }
+}
+Key Points:
+getName() → gets thread name
+
+getPriority() → gets thread priority
+
+setPriority(7) → sets priority to 7
+
+If needed, I can show how multiple threads behave with different priorities.
+
+
+Q13. Write a java program to display name and priority of a Thread. Change the name of 
+thread as “Java Thread”. Also make thread alive. 
+
+short and easy without skipping any line
+
+Here is a short and complete Java program:
+
+class MyThread extends Thread
+{
+    public void run()
+    {
+        System.out.println("Thread Name: " + Thread.currentThread().getName());
+        System.out.println("Thread Priority: " + Thread.currentThread().getPriority());
+    }
+}
+
+class Main
+{
+    public static void main(String args[])
+    {
+        MyThread t = new MyThread();
+
+        t.setName("Java Thread"); // change thread name
+
+        t.start(); // thread becomes alive
+
+        System.out.println("Is thread alive? " + t.isAlive());
+    }
+}
+Key Points:
+setName("Java Thread") → changes thread name
+
+start() → makes thread alive
+
+isAlive() → checks if thread is running
+
+If you want, I can also show how to check alive status before and after execution.
+
+
+Q14. Create a Hash map by accepting input from user as Book name and Price. Display 
+the details of the hash map. 
+
+short and easy without skipping any line
+
+Here is a short and complete Java program using HashMap:
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+
+        System.out.print("Enter number of books: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        for(int i = 0; i < n; i++)
+        {
+            System.out.print("Enter book name: ");
+            String name = sc.nextLine();
+
+            System.out.print("Enter price: ");
+            int price = sc.nextInt();
+            sc.nextLine();
+
+            map.put(name, price);
+        }
+
+        System.out.println("Book Details:");
+
+        for(Map.Entry<String, Integer> e : map.entrySet())
+        {
+            System.out.println("Book: " + e.getKey() + " Price: " + e.getValue());
+        }
+    }
+}
+Key Points:
+HashMap → stores book name (key) and price (value)
+
+put() → adds elements
+
+entrySet() → used to display key-value pairs
+
+If you want, I can also add search or sorting functionality.
+
+
+Q15. Create a JSP page to accept a number from a user and display it in words: Example: 
+123 – One Two Three. The output should be in red color.  
+
+short and easy without skipping any line
+
+Here is a short and complete JSP program:
+
+<%@ page language="java" %>
+
+<html>
+<body>
+
+<form method="post">
+    Enter Number: <input type="text" name="num">
+    <input type="submit" value="Convert">
+</form>
+
+<%
+    String n = request.getParameter("num");
+
+    if(n != null)
+    {
+        String result = "";
+
+        for(int i = 0; i < n.length(); i++)
+        {
+            char ch = n.charAt(i);
+
+            switch(ch)
+            {
+                case '0': result += "Zero "; break;
+                case '1': result += "One "; break;
+                case '2': result += "Two "; break;
+                case '3': result += "Three "; break;
+                case '4': result += "Four "; break;
+                case '5': result += "Five "; break;
+                case '6': result += "Six "; break;
+                case '7': result += "Seven "; break;
+                case '8': result += "Eight "; break;
+                case '9': result += "Nine "; break;
+            }
+        }
+
+        out.println("<font color='red'>" + result + "</font>");
+    }
+%>
+
+</body>
+</html>
+Key Points:
+Loop through each digit using charAt()
+
+switch converts digit to word
+
+Output displayed in red using <font color='red'>
+
+If needed, I can also handle negative numbers or large numbers properly.
+
+
+Q16. Write a program in to display A to Z characters after every 2 seconds. Create a thread 
+and display information of thread as name of thread, priority of the thread. 
+
+short and easy without skipping any line
+
+Here is a short and complete Java program:
+
+class MyThread extends Thread
+{
+    public void run()
+    {
+        System.out.println("Thread Name: " + Thread.currentThread().getName());
+        System.out.println("Thread Priority: " + Thread.currentThread().getPriority());
+
+        for(char ch = 'A'; ch <= 'Z'; ch++)
+        {
+            System.out.println(ch);
+            try
+            {
+                Thread.sleep(2000); // 2 seconds delay
+            }
+            catch(Exception e)
+            {
+                System.out.println(e);
+            }
+        }
+    }
+}
+
+class Main
+{
+    public static void main(String args[])
+    {
+        MyThread t = new MyThread();
+
+        t.setName("Alphabet Thread");
+        t.setPriority(5);
+
+        t.start();
+    }
+}
+Key Points:
+Displays thread name & priority using getName() and getPriority()
+
+Prints A to Z with Thread.sleep(2000)
+
+Thread created using extends Thread
+
+If you want, I can combine this with Q1 logic for exams.
+
+
+Q17. Write a java program to accept names of ‘n’ cities, insert same into ArrayList collection 
+and display the contents of same array list. Remove the element of ArrayList at 
+particular index. Accepting index from user.
+
+short and easy without skipping any line
+
+Here is a short and complete Java program using ArrayList:
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        ArrayList<String> list = new ArrayList<String>();
+
+        System.out.print("Enter number of cities: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Enter city names:");
+
+        for(int i = 0; i < n; i++)
+        {
+            String city = sc.nextLine();
+            list.add(city);
+        }
+
+        System.out.println("ArrayList contents:");
+
+        for(String s : list)
+        {
+            System.out.println(s);
+        }
+
+        System.out.print("Enter index to remove: ");
+        int index = sc.nextInt();
+
+        if(index >= 0 && index < list.size())
+        {
+            list.remove(index);
+            System.out.println("After removal:");
+
+            for(String s : list)
+            {
+                System.out.println(s);
+            }
+        }
+        else
+        {
+            System.out.println("Invalid index");
+        }
+    }
+}
+Key Points:
+ArrayList → dynamic list
+
+add() → insert elements
+
+remove(index) → removes element at given index
+
+size() → used for index validation
+
+If you want, I can also show using Iterator instead of for-each loop.
+
+
+Q18. Write a JSP program which accepts UserName in a TextBox. Display greet message 
+to the user as “Welcome username”.  
+
+short and easy without skipping any line
+
+Here is a short and complete JSP program:
+
+<%@ page language="java" %>
+
+<html>
+<body>
+
+<form method="post">
+    Enter Username: <input type="text" name="uname">
+    <input type="submit" value="Submit">
+</form>
+
+<%
+    String name = request.getParameter("uname");
+
+    if(name != null)
+    {
+        out.println("Welcome " + name);
+    }
+%>
+
+</body>
+</html>
+Key Points:
+request.getParameter() → gets user input
+
+Displays message → "Welcome username"
+
+Uses JSP scriptlet for logic
+
+If needed, I can show styled output (color, bold, etc.).
+
+
+Q19. Write a java program to accept a String from a user and display each vowel from a 
+String after every 3 seconds.
+
+short and easy without skipping any line
+
+Here is a short and complete Java program:
+
+import java.util.*;
+
+class MyThread extends Thread
+{
+    String str;
+
+    MyThread(String str)
+    {
+        this.str = str;
+    }
+
+    public void run()
+    {
+        for(int i = 0; i < str.length(); i++)
+        {
+            char ch = str.charAt(i);
+
+            if(ch=='a' || ch=='e' || ch=='i' || ch=='o' || ch=='u' ||
+               ch=='A' || ch=='E' || ch=='I' || ch=='O' || ch=='U')
+            {
+                System.out.println(ch);
+                try
+                {
+                    Thread.sleep(3000); // 3 seconds
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e);
+                }
+            }
+        }
+    }
+}
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a string: ");
+        String str = sc.nextLine();
+
+        MyThread t = new MyThread(str);
+
+        t.start();
+    }
+}
+Key Points:
+Checks vowels using if condition
+
+Thread.sleep(3000) → 3-second delay
+
+Thread used to process string
+
+If you want, I can also display position of vowels or count them.
+
+
+Q20. Write a java program to accept ‘N’ student names through command line, store them 
+into the appropriate Collection and display them by using Iterator.
+
+short and easy without skipping any line
+
+Here is a short and complete Java program using command line arguments and ArrayList:
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        ArrayList<String> list = new ArrayList<String>();
+
+        for(int i = 0; i < args.length; i++)
+        {
+            list.add(args[i]);
+        }
+
+        System.out.println("Student Names:");
+
+        Iterator<String> it = list.iterator();
+
+        while(it.hasNext())
+        {
+            System.out.println(it.next());
+        }
+    }
+}
+Key Points:
+args[] → command line inputs
+
+ArrayList → stores names
+
+Iterator → used to display elements
+
+How to run:
+javac Main.java
+java Main Amit Rahul Sarthak
+If you want, I can also show version using LinkedList.
+
+
+Q21. Write a java program to accept names of ‘n’ cities, insert same into array list collection 
+and display the contents of same ArrayList. Display cities using Iterator interface. 
+
+short and easy without skipping any line
+
+Here is a short and complete Java program using ArrayList and Iterator:
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        ArrayList<String> list = new ArrayList<String>();
+
+        System.out.print("Enter number of cities: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Enter city names:");
+
+        for(int i = 0; i < n; i++)
+        {
+            String city = sc.nextLine();
+            list.add(city);
+        }
+
+        System.out.println("Cities:");
+
+        Iterator<String> it = list.iterator();
+
+        while(it.hasNext())
+        {
+            System.out.println(it.next());
+        }
+    }
+}
+Key Points:
+ArrayList → stores city names
+
+add() → inserts elements
+
+Iterator → used to display elements (hasNext(), next())
+
+If you want, I can show difference between Iterator and ListIterator (important for exams).
+
+
+Q22. Write a JSP program to accept Name and Age of Voter and check whether he is eligible 
+for voting or not. 
+
+short and easy without skipping any line
+
+Here is a short and complete JSP program:
+
+<%@ page language="java" %>
+
+<html>
+<body>
+
+<form method="post">
+    Enter Name: <input type="text" name="name"><br><br>
+    Enter Age: <input type="text" name="age"><br><br>
+    <input type="submit" value="Check">
+</form>
+
+<%
+    String name = request.getParameter("name");
+    String ageStr = request.getParameter("age");
+
+    if(name != null && ageStr != null)
+    {
+        int age = Integer.parseInt(ageStr);
+
+        if(age >= 18)
+        {
+            out.println("Welcome " + name + ", You are eligible for voting.");
+        }
+        else
+        {
+            out.println("Sorry " + name + ", You are not eligible for voting.");
+        }
+    }
+%>
+
+</body>
+</html>
+Key Points:
+request.getParameter() → gets form input
+
+Condition age >= 18 → checks eligibility
+
+Displays result using out.println()
+
+If you want, I can add color styling (green/red for eligible/not eligible).
+
+
+Q23.  Write a servlet program to accept username and display message as “Have a Nice 
+day!!!” with username. 
+
+short and easy without skipping any line
+
+Here is a short and complete Servlet program:
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class MyServlet extends HttpServlet
+{
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        response.setContentType("text/html");
+
+        PrintWriter out = response.getWriter();
+
+        String name = request.getParameter("uname");
+
+        out.println("<html><body>");
+        out.println("<h2>Have a Nice day!!! " + name + "</h2>");
+        out.println("</body></html>");
+    }
+}
+Simple HTML Form (to call servlet):
+<html>
+<body>
+<form action="MyServlet" method="post">
+    Enter Username: <input type="text" name="uname">
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
+Key Points:
+doPost() → handles form submission
+
+request.getParameter() → gets username
+
+PrintWriter → used to display output
+
+If needed, I can also give web.xml configuration (for exams).
+
+
+Q24. Write program to create a link list of integer objects. Perform following operations on 
+link list. 
+ i. Add element at first position 
+ ii. Display the size of link list
+
+short and easy without skipping any line
+
+Here is a short and complete Java program using LinkedList:
+
+import java.util.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        Scanner sc = new Scanner(System.in);
+
+        LinkedList<Integer> list = new LinkedList<Integer>();
+
+        System.out.print("Enter number of elements: ");
+        int n = sc.nextInt();
+
+        System.out.println("Enter integers:");
+
+        for(int i = 0; i < n; i++)
+        {
+            int num = sc.nextInt();
+            list.addFirst(num); // add at first position
+        }
+
+        System.out.println("LinkedList elements:");
+
+        for(int x : list)
+        {
+            System.out.println(x);
+        }
+
+        System.out.println("Size of LinkedList: " + list.size());
+    }
+}
+Key Points:
+addFirst() → adds element at first position
+
+size() → returns number of elements
+
+LinkedList<Integer> → stores integer objects
+
+If you want, I can also show difference between addFirst() and add().
+
+
+Q25. Write JDBC program to check database connection to Emp table (Eno, ename, salary). 
+Display appropriate message. 
+
+short and easy without skipping any line
+
+Here is a short and complete JDBC program to check database connection:
+
+import java.sql.*;
+
+class Main
+{
+    public static void main(String args[])
+    {
+        try
+        {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test", "root", "root");
+
+            Statement st = con.createStatement();
+
+            ResultSet rs = st.executeQuery("SELECT * FROM Emp");
+
+            if(rs.next())
+            {
+                System.out.println("Connection successful. Data found in Emp table.");
+            }
+            else
+            {
+                System.out.println("Connection successful. No data in Emp table.");
+            }
+
+            con.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println("Connection failed");
+            System.out.println(e);
+        }
+    }
+}
+Key Points:
+Class.forName() → loads JDBC driver
+
+DriverManager.getConnection() → establishes connection
+
+executeQuery() → runs SQL query
+
+rs.next() → checks if table has data
+
+If needed, I can also give version for Oracle or PostgreSQL.
+
+
+
+
