@@ -1,0 +1,2021 @@
+
+
+
+Q1. Write a Java program to accept the details of Employee (Eno, EName, Designation, 
+Salary) from a user. Write JDBC program to perform following operations: 
+i. Store employee details into the Employee table.  
+ii. Display all details of Employee from the table. 
+
+short and easy without skipping any line
+
+Here is a short and easy JDBC Java program (with all lines, nothing skipped):
+
+✅ Java Program: Insert + Display Employee Data using JDBC
+import java.sql.*;
+import java.util.Scanner;
+
+public class EmployeeJDBC {
+    public static void main(String[] args) {
+        try {
+            // Load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Create Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test", "root", "root");
+
+            Scanner sc = new Scanner(System.in);
+
+            // Accept Employee Details
+            System.out.print("Enter Employee No: ");
+            int eno = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter Employee Name: ");
+            String name = sc.nextLine();
+
+            System.out.print("Enter Designation: ");
+            String desig = sc.nextLine();
+
+            System.out.print("Enter Salary: ");
+            double salary = sc.nextDouble();
+
+            // Insert Data
+            PreparedStatement ps = con.prepareStatement(
+                "INSERT INTO Employee VALUES (?, ?, ?, ?)");
+            ps.setInt(1, eno);
+            ps.setString(2, name);
+            ps.setString(3, desig);
+            ps.setDouble(4, salary);
+
+            int i = ps.executeUpdate();
+            if (i > 0) {
+                System.out.println("Record Inserted Successfully");
+            }
+
+            // Display Data
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM Employee");
+
+            System.out.println("\nEmployee Details:");
+            while (rs.next()) {
+                System.out.println(
+                    rs.getInt(1) + " " +
+                    rs.getString(2) + " " +
+                    rs.getString(3) + " " +
+                    rs.getDouble(4)
+                );
+            }
+
+            // Close Connection
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+🧠 Important Notes (for exam)
+Database name: test
+
+Table name: Employee(Eno, EName, Designation, Salary)
+
+Change username/password if needed
+
+MySQL Connector JAR must be added
+
+If you want, I can also give you:
+
+SQL command to create table
+
+Ultra-short “write-and-get-marks” version
+
+Common viva questions for this program
+
+
+Q2. Design HTML login screen. Accept the user name and password from the user. Write 
+a servlet program to accept the login name and password. Check if it is “admin” and 
+“admin” respectively or not. If it is correct then display Welcome message otherwise 
+display error message. 
+
+short and easy without skipping any line
+
+Here is a short and easy complete solution (HTML + Servlet, no lines skipped):
+
+✅ 1. HTML Login Page (login.html)
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <form action="LoginServlet" method="post">
+        Username: <input type="text" name="uname"><br><br>
+        Password: <input type="password" name="pass"><br><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+✅ 2. Servlet Program (LoginServlet.java)
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class LoginServlet extends HttpServlet {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        String uname = request.getParameter("uname");
+        String pass = request.getParameter("pass");
+
+        if (uname.equals("admin") && pass.equals("admin")) {
+            out.println("<h2>Welcome Admin</h2>");
+        } else {
+            out.println("<h2>Error: Invalid Username or Password</h2>");
+        }
+    }
+}
+🧠 Important Points (for exam)
+Form action must match servlet name → LoginServlet
+
+Method should be POST
+
+Use request.getParameter() to read values
+
+Condition: "admin" and "admin"
+
+If you want, I can also give:
+
+web.xml configuration (important for marks)
+
+Even shorter “exam writing format” version
+
+Diagram for flow (HTML → Servlet)
+
+
+Q3. Write a JSP program to display the details of Patient (PNo, PName, age, disease) 
+from database and display it in tabular form on browser. 
+
+short and easy without skipping any line
+
+Here is a short and easy JSP program (complete, no lines skipped):
+
+✅ JSP Program (patient.jsp)
+<%@ page import="java.sql.*" %>
+
+<html>
+<head>
+    <title>Patient Details</title>
+</head>
+<body>
+
+<h2>Patient Details</h2>
+
+<table border="1">
+<tr>
+    <th>PNo</th>
+    <th>PName</th>
+    <th>Age</th>
+    <th>Disease</th>
+</tr>
+
+<%
+    try {
+        // Load Driver
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        // Create Connection
+        Connection con = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/test", "root", "root");
+
+        // Create Statement
+        Statement st = con.createStatement();
+
+        // Execute Query
+        ResultSet rs = st.executeQuery("SELECT * FROM Patient");
+
+        // Display Data
+        while (rs.next()) {
+%>
+<tr>
+    <td><%= rs.getInt(1) %></td>
+    <td><%= rs.getString(2) %></td>
+    <td><%= rs.getInt(3) %></td>
+    <td><%= rs.getString(4) %></td>
+</tr>
+<%
+        }
+
+        // Close Connection
+        con.close();
+
+    } catch (Exception e) {
+        out.println(e);
+    }
+%>
+
+</table>
+
+</body>
+</html>
+🧠 Important Notes (for exam)
+Database: test
+
+Table: Patient(PNo, PName, age, disease)
+
+Uses JDBC inside JSP (<% %>)
+
+Data printed using <%= %> inside table
+
+If you want, I can also give:
+
+SQL to create Patient table
+
+Ultra-short version for writing in exams
+
+Common viva questions from this JSP
+
+
+Q4. Write a Java program using Runnable interface to blink Text on the frame. 
+short and easy without skipping any line
+
+Here is a short and easy Java program using Runnable to blink text on a frame (complete, no lines skipped):
+
+✅ Java Program: Blinking Text using Runnable
+import java.awt.*;
+import javax.swing.*;
+
+public class BlinkText extends JFrame implements Runnable {
+
+    JLabel label;
+    Thread t;
+
+    public BlinkText() {
+        label = new JLabel("Blinking Text", JLabel.CENTER);
+        add(label);
+
+        setSize(300, 200);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        t = new Thread(this);
+        t.start();
+    }
+
+    public void run() {
+        try {
+            while (true) {
+                label.setVisible(true);
+                Thread.sleep(500);
+
+                label.setVisible(false);
+                Thread.sleep(500);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        new BlinkText();
+    }
+}
+🧠 Important Points (for exam)
+Implements Runnable
+
+Thread created using new Thread(this)
+
+run() method contains blinking logic
+
+Thread.sleep(500) controls blink speed
+
+If you want, I can also give:
+
+Same program using Thread class (alternative)
+
+Ultra-short exam-writing version
+
+Viva questions on multithreading
+
+
+Q5.  Write a program that implements a multi-thread application that has three threads. First 
+thread generates random integer after every 1 second and if the value is even, second 
+thread computes the square of the number and prints. If the value is odd, the third 
+thread will print the value of cube of the number. 
+
+short and easy without skipping any line
+
+Here is a short and easy multi-thread Java program (complete, no lines skipped):
+
+✅ Java Program: Three Threads (Even → Square, Odd → Cube)
+import java.util.Random;
+
+class Number extends Thread {
+    public void run() {
+        try {
+            Random r = new Random();
+
+            while (true) {
+                int num = r.nextInt(100);
+                System.out.println("Generated Number: " + num);
+
+                if (num % 2 == 0) {
+                    new Square(num).start();
+                } else {
+                    new Cube(num).start();
+                }
+
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+
+class Square extends Thread {
+    int n;
+
+    Square(int n) {
+        this.n = n;
+    }
+
+    public void run() {
+        System.out.println("Square of " + n + " is " + (n * n));
+    }
+}
+
+class Cube extends Thread {
+    int n;
+
+    Cube(int n) {
+        this.n = n;
+    }
+
+    public void run() {
+        System.out.println("Cube of " + n + " is " + (n * n * n));
+    }
+}
+
+public class MultiThreadDemo {
+    public static void main(String[] args) {
+        Number t = new Number();
+        t.start();
+    }
+}
+🧠 Important Points (for exam)
+Thread 1 (Number) → generates random number every 1 sec
+
+Thread 2 (Square) → runs if number is even
+
+Thread 3 (Cube) → runs if number is odd
+
+Uses Thread.sleep(1000) for delay
+
+Multiple threads created using start()
+
+If you want, I can also give:
+
+Runnable version (sometimes asked)
+
+Flow diagram (very useful for viva)
+
+Ultra-short exam writing format
+
+
+Q6. Consider a table Product (Pid, Pname, Price). Insert at least five records into the table. 
+Write a JDBC program to perform following operations: 
+i. Display all the records from a Product table. 
+ii. Display the product details whose price is > 1000 
+
+short and easy without skipping any line
+
+Here is a short and easy JDBC program (complete, no lines skipped):
+
+✅ SQL: Insert Records (run once in MySQL)
+CREATE TABLE Product (
+    Pid INT,
+    Pname VARCHAR(20),
+    Price DOUBLE
+);
+
+INSERT INTO Product VALUES
+(1, 'Pen', 50),
+(2, 'Book', 200),
+(3, 'Mobile', 15000),
+(4, 'Headphone', 1200),
+(5, 'Bag', 800);
+✅ Java Program (ProductJDBC.java)
+import java.sql.*;
+
+public class ProductJDBC {
+    public static void main(String[] args) {
+        try {
+            // Load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Create Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test", "root", "root");
+
+            // Create Statement
+            Statement st = con.createStatement();
+
+            // i. Display all records
+            ResultSet rs1 = st.executeQuery("SELECT * FROM Product");
+
+            System.out.println("All Products:");
+            while (rs1.next()) {
+                System.out.println(
+                    rs1.getInt(1) + " " +
+                    rs1.getString(2) + " " +
+                    rs1.getDouble(3)
+                );
+            }
+
+            // ii. Display products with price > 1000
+            ResultSet rs2 = st.executeQuery(
+                "SELECT * FROM Product WHERE Price > 1000");
+
+            System.out.println("\nProducts with Price > 1000:");
+            while (rs2.next()) {
+                System.out.println(
+                    rs2.getInt(1) + " " +
+                    rs2.getString(2) + " " +
+                    rs2.getDouble(3)
+                );
+            }
+
+            // Close Connection
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+🧠 Important Points (for exam)
+Table: Product(Pid, Pname, Price)
+
+Uses two queries:
+
+SELECT * FROM Product
+
+SELECT * FROM Product WHERE Price > 1000
+
+Uses Statement and ResultSet
+
+Output printed using rs.get...()
+
+If you want, I can also give:
+
+Ultra-short version for writing in exam
+
+Same program using PreparedStatement
+
+Common viva questions from JDBC
+
+
+Q7. Write a program to perform Arithmetic operations such as Addition, Subtraction, 
+Multiplication and Division. Design a HTML to accept two numbers in text box and 
+radio buttons to display operations. On submit display result as per the selected 
+operation on next page using JSP.
+
+short and easy without skipping any line
+
+Here is a short and easy complete solution (HTML + JSP, no lines skipped):
+
+✅ 1. HTML Page (arith.html)
+<html>
+<head>
+    <title>Arithmetic Operations</title>
+</head>
+<body>
+    <form action="result.jsp" method="post">
+        Enter First Number: <input type="text" name="n1"><br><br>
+        Enter Second Number: <input type="text" name="n2"><br><br>
+
+        <input type="radio" name="op" value="add"> Addition<br>
+        <input type="radio" name="op" value="sub"> Subtraction<br>
+        <input type="radio" name="op" value="mul"> Multiplication<br>
+        <input type="radio" name="op" value="div"> Division<br><br>
+
+        <input type="submit" value="Calculate">
+    </form>
+</body>
+</html>
+✅ 2. JSP Page (result.jsp)
+<%@ page import="java.io.*" %>
+
+<html>
+<head>
+    <title>Result</title>
+</head>
+<body>
+
+<%
+    double n1 = Double.parseDouble(request.getParameter("n1"));
+    double n2 = Double.parseDouble(request.getParameter("n2"));
+    String op = request.getParameter("op");
+
+    double result = 0;
+
+    if (op.equals("add")) {
+        result = n1 + n2;
+    } else if (op.equals("sub")) {
+        result = n1 - n2;
+    } else if (op.equals("mul")) {
+        result = n1 * n2;
+    } else if (op.equals("div")) {
+        result = n1 / n2;
+    }
+%>
+
+<h2>Result is: <%= result %></h2>
+
+</body>
+</html>
+🧠 Important Points (for exam)
+HTML uses radio buttons for operation selection
+
+JSP uses request.getParameter()
+
+Convert input using Double.parseDouble()
+
+if-else used to perform operations
+
+Result displayed using <%= %>
+
+If you want, I can also give:
+
+Version with error handling (division by zero)
+
+Ultra-short writing format
+
+Viva questions from JSP
+
+
+Q8. Write a Java program to display information about all columns in the DONAR table 
+using ResultSetMetaData.  
+
+short and easy without skipping any line
+
+Here is a short and easy JDBC program (complete, no lines skipped):
+
+✅ Java Program: Display Column Information using ResultSetMetaData
+import java.sql.*;
+
+public class DonarMetaData {
+    public static void main(String[] args) {
+        try {
+            // Load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Create Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test", "root", "root");
+
+            // Create Statement
+            Statement st = con.createStatement();
+
+            // Execute Query
+            ResultSet rs = st.executeQuery("SELECT * FROM Donar");
+
+            // Get MetaData
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            int cols = rsmd.getColumnCount();
+
+            System.out.println("Column Information:");
+
+            for (int i = 1; i <= cols; i++) {
+                System.out.println("Column No: " + i);
+                System.out.println("Column Name: " + rsmd.getColumnName(i));
+                System.out.println("Column Type: " + rsmd.getColumnTypeName(i));
+                System.out.println("Column Size: " + rsmd.getColumnDisplaySize(i));
+                System.out.println("---------------------------");
+            }
+
+            // Close Connection
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+🧠 Important Points (for exam)
+Uses ResultSetMetaData to get column details
+
+Methods used:
+
+getColumnCount()
+
+getColumnName()
+
+getColumnTypeName()
+
+getColumnDisplaySize()
+
+Loop runs from 1 to column count
+
+If you want, I can also give:
+
+Ultra-short exam writing version
+
+Viva questions on ResultSetMetaData
+
+Difference between ResultSet and ResultSetMetaData
+
+
+Q9. Write a JDBC program to insert the records into the table Employee (Id, name, salary) 
+using PreparedStatement interface. Accept details of Employees from user. Also 
+display the Employees whose name starts with “A”. 
+
+short and easy without skipping any line
+
+Here is a short and easy JDBC program using PreparedStatement (complete, no lines skipped):
+
+✅ Java Program (EmployeePrepared.java)
+import java.sql.*;
+import java.util.Scanner;
+
+public class EmployeePrepared {
+    public static void main(String[] args) {
+        try {
+            // Load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Create Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test", "root", "root");
+
+            Scanner sc = new Scanner(System.in);
+
+            // Accept Employee Details
+            System.out.print("Enter Id: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Enter Name: ");
+            String name = sc.nextLine();
+
+            System.out.print("Enter Salary: ");
+            double salary = sc.nextDouble();
+
+            // Insert using PreparedStatement
+            PreparedStatement ps = con.prepareStatement(
+                "INSERT INTO Employee VALUES (?, ?, ?)");
+            ps.setInt(1, id);
+            ps.setString(2, name);
+            ps.setDouble(3, salary);
+
+            int i = ps.executeUpdate();
+            if (i > 0) {
+                System.out.println("Record Inserted Successfully");
+            }
+
+            // Display Employees whose name starts with 'A'
+            PreparedStatement ps2 = con.prepareStatement(
+                "SELECT * FROM Employee WHERE name LIKE 'A%'");
+
+            ResultSet rs = ps2.executeQuery();
+
+            System.out.println("\nEmployees whose name starts with A:");
+            while (rs.next()) {
+                System.out.println(
+                    rs.getInt(1) + " " +
+                    rs.getString(2) + " " +
+                    rs.getDouble(3)
+                );
+            }
+
+            // Close Connection
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+🧠 Important Points (for exam)
+Uses PreparedStatement for insert
+
+Query: INSERT INTO Employee VALUES (?, ?, ?)
+
+Condition: name LIKE 'A%'
+
+Uses executeUpdate() for insert
+
+Uses executeQuery() for select
+
+If you want, I can also give:
+
+Ultra-short exam writing version
+
+SQL to create Employee table
+
+Common viva questions from PreparedStatement
+
+
+Q10. Write a Java program to display information about the database and list all the tables 
+in the database. (Use DatabaseMetaData) 
+
+short and easy without skipping any line
+
+
+Here is a short and easy JDBC program using DatabaseMetaData (complete, no lines skipped):
+
+✅ Java Program (DBMetaDataDemo.java)
+import java.sql.*;
+
+public class DBMetaDataDemo {
+    public static void main(String[] args) {
+        try {
+            // Load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Create Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test", "root", "root");
+
+            // Get DatabaseMetaData
+            DatabaseMetaData dbmd = con.getMetaData();
+
+            // Display Database Information
+            System.out.println("Driver Name: " + dbmd.getDriverName());
+            System.out.println("Driver Version: " + dbmd.getDriverVersion());
+            System.out.println("Database Name: " + dbmd.getDatabaseProductName());
+            System.out.println("Database Version: " + dbmd.getDatabaseProductVersion());
+            System.out.println("User Name: " + dbmd.getUserName());
+
+            // List all tables
+            System.out.println("\nTables in Database:");
+            ResultSet rs = dbmd.getTables(null, null, "%", new String[]{"TABLE"});
+
+            while (rs.next()) {
+                System.out.println(rs.getString("TABLE_NAME"));
+            }
+
+            // Close Connection
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+🧠 Important Points (for exam)
+Uses DatabaseMetaData
+
+Method: con.getMetaData()
+
+Database info methods:
+
+getDriverName()
+
+getDatabaseProductName()
+
+getUserName()
+
+Tables fetched using:
+
+getTables(null, null, "%", new String[]{"TABLE"})
+
+If you want, I can also give:
+
+Ultra-short version for exam writing
+
+Viva questions from DatabaseMetaData
+
+Difference: DatabaseMetaData vs ResultSetMetaData
+
+
+Q11. Write a Multithreading program in java to display the number’s from 1 to 100 
+continuously in a TextField by clicking on button.  
+
+short and easy without skipping any line
+
+Here is a short and easy Java Multithreading program (complete, no lines skipped):
+
+✅ Java Program: Display 1 to 100 in TextField using Thread
+import java.awt.*;
+import java.awt.event.*;
+
+public class NumberThread extends Frame implements Runnable, ActionListener {
+
+    TextField tf;
+    Button btn;
+    Thread t;
+
+    public NumberThread() {
+        tf = new TextField(20);
+        btn = new Button("Start");
+
+        setLayout(new FlowLayout());
+        add(tf);
+        add(btn);
+
+        btn.addActionListener(this);
+
+        setSize(300, 200);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        t = new Thread(this);
+        t.start();
+    }
+
+    public void run() {
+        try {
+            for (int i = 1; i <= 100; i++) {
+                tf.setText(String.valueOf(i));
+                Thread.sleep(100);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        new NumberThread();
+    }
+}
+🧠 Important Points (for exam)
+Uses AWT (Frame, TextField, Button)
+
+Implements Runnable and ActionListener
+
+Thread starts on button click
+
+Numbers 1 to 100 displayed using loop
+
+Thread.sleep(100) for delay
+
+If you want, I can also give:
+
+Swing version (JFrame)
+
+Ultra-short exam version
+
+Viva questions from multithreading
+
+
+Q12. Write a SERVLET program which counts how many times a user has visited a web 
+page. If user is visiting the page for the first time, display a welcome message. If the 
+user is revisiting the page, display the number of times visited. (Use Cookie)
+
+short and easy without skipping any line
+
+Here is a short and easy Servlet program using Cookie (complete, no lines skipped):
+
+✅ Servlet Program (VisitCountServlet.java)
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class VisitCountServlet extends HttpServlet {
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        int count = 0;
+
+        // Get Cookies
+        Cookie[] cookies = request.getCookies();
+        boolean found = false;
+
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                if (cookies[i].getName().equals("visit")) {
+                    count = Integer.parseInt(cookies[i].getValue());
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (found) {
+            count++;
+            out.println("<h2>You have visited " + count + " times</h2>");
+        } else {
+            count = 1;
+            out.println("<h2>Welcome! This is your first visit</h2>");
+        }
+
+        // Create/Update Cookie
+        Cookie c = new Cookie("visit", String.valueOf(count));
+        response.addCookie(c);
+    }
+}
+🧠 Important Points (for exam)
+Uses Cookie to store visit count
+
+request.getCookies() to read cookies
+
+response.addCookie() to update cookie
+
+First visit → Welcome message
+
+Next visits → count increases
+
+If you want, I can also give:
+
+web.xml configuration
+
+Ultra-short exam version
+
+Viva questions on Cookies vs Session
+
+
+Q13. Construct a linked List containing names of colours: red, blue, yellow and orange. 
+Write a menu driven program to do the following:   
+a. Display the contents of the List using an Iterator  
+b. Display the contents of the List in reverse order using a ListIterator   
+c. Create another list containing pink and green. Insert the elements of this list  
+between blue and yellow
+
+short and easy without skipping any line
+
+Here is a short and easy Java program (menu-driven, LinkedList) — complete, no lines skipped:
+
+✅ Java Program: LinkedList Operations
+import java.util.*;
+
+public class ColorList {
+    public static void main(String[] args) {
+
+        LinkedList<String> list = new LinkedList<String>();
+
+        // Add initial colors
+        list.add("red");
+        list.add("blue");
+        list.add("yellow");
+        list.add("orange");
+
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n1.Display using Iterator");
+            System.out.println("2.Display in Reverse");
+            System.out.println("3.Insert new colors");
+            System.out.println("4.Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+
+                case 1:
+                    Iterator<String> it = list.iterator();
+                    System.out.println("List:");
+                    while (it.hasNext()) {
+                        System.out.println(it.next());
+                    }
+                    break;
+
+                case 2:
+                    ListIterator<String> lit = list.listIterator(list.size());
+                    System.out.println("Reverse List:");
+                    while (lit.hasPrevious()) {
+                        System.out.println(lit.previous());
+                    }
+                    break;
+
+                case 3:
+                    LinkedList<String> list2 = new LinkedList<String>();
+                    list2.add("pink");
+                    list2.add("green");
+
+                    int index = list.indexOf("yellow");
+                    list.addAll(index, list2);
+
+                    System.out.println("After Insertion:");
+                    System.out.println(list);
+                    break;
+
+                case 4:
+                    System.exit(0);
+            }
+
+        } while (true);
+    }
+}
+🧠 Important Points (for exam)
+Uses LinkedList<String>
+
+Iterator → forward display
+
+ListIterator → reverse display
+
+addAll(index, list2) → insert between elements
+
+Menu-driven using switch
+
+If you want, I can also give:
+
+Ultra-short exam writing version
+
+Without menu (simplest possible)
+
+Viva questions from LinkedList
+
+
+Q14. Write a servlet program to display IP address, browser type, current date and time of 
+server.
+
+short and easy without skipping any line
+
+Here is a short and easy Servlet program (complete, no lines skipped):
+
+✅ Servlet Program (InfoServlet.java)
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.util.Date;
+
+public class InfoServlet extends HttpServlet {
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Get IP Address
+        String ip = request.getRemoteAddr();
+
+        // Get Browser Type
+        String browser = request.getHeader("User-Agent");
+
+        // Get Current Date and Time
+        Date date = new Date();
+
+        // Display Information
+        out.println("<h2>Client IP Address: " + ip + "</h2>");
+        out.println("<h2>Browser Type: " + browser + "</h2>");
+        out.println("<h2>Server Date and Time: " + date + "</h2>");
+    }
+}
+🧠 Important Points (for exam)
+IP → request.getRemoteAddr()
+
+Browser → request.getHeader("User-Agent")
+
+Date → new Date()
+
+Output using PrintWriter
+
+If you want, I can also give:
+
+web.xml configuration
+
+Ultra-short version for exams
+
+Viva questions on Servlet request methods
+
+
+Q15. Write a Multithreading program in java to display the characters from ‘A’ to ‘Z’ 
+continuously in a TextField by clicking on button. 
+
+short and easy without skipping any line
+
+Here is a short and easy Java Multithreading program (complete, no lines skipped):
+
+✅ Java Program: Display A to Z in TextField using Thread
+import java.awt.*;
+import java.awt.event.*;
+
+public class CharThread extends Frame implements Runnable, ActionListener {
+
+    TextField tf;
+    Button btn;
+    Thread t;
+
+    public CharThread() {
+        tf = new TextField(20);
+        btn = new Button("Start");
+
+        setLayout(new FlowLayout());
+        add(tf);
+        add(btn);
+
+        btn.addActionListener(this);
+
+        setSize(300, 200);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        t = new Thread(this);
+        t.start();
+    }
+
+    public void run() {
+        try {
+            for (char c = 'A'; c <= 'Z'; c++) {
+                tf.setText(String.valueOf(c));
+                Thread.sleep(100);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        new CharThread();
+    }
+}
+🧠 Important Points (for exam)
+Uses AWT (Frame, TextField, Button)
+
+Implements Runnable and ActionListener
+
+Thread starts on button click
+
+Loop from 'A' to 'Z'
+
+Thread.sleep(100) controls speed
+
+If you want, I can also give:
+
+Swing version (JFrame)
+
+Ultra-short exam version
+
+Viva questions from multithreading
+
+
+Q16. Accept username and password from HTML. Write a JSP program to search them into 
+database, if found then display appropriate message on the browser otherwise display 
+error message.   
+short and easy without skipping any line
+
+Here is a short and easy complete solution (HTML + JSP, no lines skipped):
+
+✅ 1. HTML Page (login.html)
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <form action="check.jsp" method="post">
+        Username: <input type="text" name="uname"><br><br>
+        Password: <input type="password" name="pass"><br><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+✅ 2. JSP Program (check.jsp)
+<%@ page import="java.sql.*" %>
+
+<html>
+<head>
+    <title>Login Result</title>
+</head>
+<body>
+
+<%
+    String uname = request.getParameter("uname");
+    String pass = request.getParameter("pass");
+
+    try {
+        // Load Driver
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        // Create Connection
+        Connection con = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/test", "root", "root");
+
+        // Prepare Statement
+        PreparedStatement ps = con.prepareStatement(
+            "SELECT * FROM users WHERE username=? AND password=?");
+
+        ps.setString(1, uname);
+        ps.setString(2, pass);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            out.println("<h2>Login Successful</h2>");
+        } else {
+            out.println("<h2>Error: Invalid Username or Password</h2>");
+        }
+
+        con.close();
+
+    } catch (Exception e) {
+        out.println(e);
+    }
+%>
+
+</body>
+</html>
+🧠 Important Points (for exam)
+Uses PreparedStatement (safe + expected)
+
+Query: SELECT * FROM users WHERE username=? AND password=?
+
+rs.next() → checks if record exists
+
+HTML sends data using POST
+
+JSP handles DB + logic
+
+If you want, I can also give:
+
+SQL to create users table
+
+Ultra-short exam version
+
+Viva questions from JSP login systems
+
+
+Q17. Write a java program to solve producer consumer problem in which a producer 
+produces a value and consumer consume the value before producer generate the next 
+value. (Use thread synchronization) 
+
+
+short and easy without skipping any line
+
+Here is a short and easy Java program for Producer–Consumer using thread synchronization (complete, no lines skipped):
+
+✅ Java Program: Producer Consumer Problem
+class Shared {
+    int value;
+    boolean flag = false;
+
+    synchronized void produce(int v) {
+        try {
+            if (flag)
+                wait();
+
+            value = v;
+            System.out.println("Produced: " + value);
+
+            flag = true;
+            notify();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    synchronized void consume() {
+        try {
+            if (!flag)
+                wait();
+
+            System.out.println("Consumed: " + value);
+
+            flag = false;
+            notify();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+
+class Producer extends Thread {
+    Shared s;
+
+    Producer(Shared s) {
+        this.s = s;
+    }
+
+    public void run() {
+        int i = 1;
+        while (true) {
+            s.produce(i++);
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }
+}
+
+class Consumer extends Thread {
+    Shared s;
+
+    Consumer(Shared s) {
+        this.s = s;
+    }
+
+    public void run() {
+        while (true) {
+            s.consume();
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }
+}
+
+public class ProducerConsumerDemo {
+    public static void main(String[] args) {
+        Shared s = new Shared();
+
+        Producer p = new Producer(s);
+        Consumer c = new Consumer(s);
+
+        p.start();
+        c.start();
+    }
+}
+🧠 Important Points (for exam)
+Uses synchronized methods
+
+Uses wait() and notify()
+
+flag controls production/consumption
+
+Producer produces → Consumer consumes → repeat
+
+Ensures no overwrite before consumption
+
+If you want, I can also give:
+
+Ultra-short exam version
+
+Diagram (very helpful for viva)
+
+Explanation in 5 lines for theory question
+
+
+Q18. Create a table as Course (Code, name, department_name, number_of_students). Insert 
+values in the table. Write a JDBC program to perform following operations: 
+i. Update number_of_students of “BSc Computer Science” to 120.  
+ii. Delete the course details if number_of_students<10 
+
+short and easy without skipping any line
+
+Here is a short and easy JDBC program (complete, no lines skipped):
+
+✅ SQL: Create Table and Insert Records
+CREATE TABLE Course (
+    Code INT,
+    name VARCHAR(50),
+    department_name VARCHAR(50),
+    number_of_students INT
+);
+
+INSERT INTO Course VALUES
+(1, 'BSc Computer Science', 'Science', 80),
+(2, 'BCom', 'Commerce', 50),
+(3, 'BA', 'Arts', 8),
+(4, 'BBA', 'Management', 30),
+(5, 'BCA', 'Computer', 5);
+✅ Java Program (CourseJDBC.java)
+import java.sql.*;
+
+public class CourseJDBC {
+    public static void main(String[] args) {
+        try {
+            // Load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Create Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test", "root", "root");
+
+            // Create Statement
+            Statement st = con.createStatement();
+
+            // i. Update number_of_students
+            int i = st.executeUpdate(
+                "UPDATE Course SET number_of_students=120 WHERE name='BSc Computer Science'");
+
+            if (i > 0) {
+                System.out.println("Record Updated Successfully");
+            }
+
+            // ii. Delete records where number_of_students < 10
+            int d = st.executeUpdate(
+                "DELETE FROM Course WHERE number_of_students < 10");
+
+            if (d > 0) {
+                System.out.println("Records Deleted Successfully");
+            }
+
+            // Close Connection
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+🧠 Important Points (for exam)
+Uses executeUpdate() for UPDATE and DELETE
+
+Update condition:
+
+name='BSc Computer Science'
+
+Delete condition:
+
+number_of_students < 10
+
+Table: Course(Code, name, department_name, number_of_students)
+
+If you want, I can also give:
+
+Ultra-short exam writing version
+
+Same using PreparedStatement
+
+Viva questions from JDBC operations
+
+
+Q19. Create table as Person(pno, pname, pcity, gender, bornyear). Write a JDBC program 
+to perform search operation on Person table. 
+i. Search all the person born in the year 1986. 
+ii. Search all the females born between 2000-2005. 
+short and easy without skipping any line
+
+Here is a short and easy JDBC program (complete, no lines skipped):
+
+✅ SQL: Create Table and Insert Records
+CREATE TABLE Person (
+    pno INT,
+    pname VARCHAR(50),
+    pcity VARCHAR(50),
+    gender VARCHAR(10),
+    bornyear INT
+);
+
+INSERT INTO Person VALUES
+(1, 'Amit', 'Pune', 'Male', 1986),
+(2, 'Sneha', 'Mumbai', 'Female', 2002),
+(3, 'Riya', 'Delhi', 'Female', 2004),
+(4, 'John', 'Goa', 'Male', 1990),
+(5, 'Pooja', 'Pune', 'Female', 1986);
+✅ Java Program (PersonSearch.java)
+import java.sql.*;
+
+public class PersonSearch {
+    public static void main(String[] args) {
+        try {
+            // Load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Create Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test", "root", "root");
+
+            // Create Statement
+            Statement st = con.createStatement();
+
+            // i. Persons born in 1986
+            ResultSet rs1 = st.executeQuery(
+                "SELECT * FROM Person WHERE bornyear = 1986");
+
+            System.out.println("Persons born in 1986:");
+            while (rs1.next()) {
+                System.out.println(
+                    rs1.getInt(1) + " " +
+                    rs1.getString(2) + " " +
+                    rs1.getString(3) + " " +
+                    rs1.getString(4) + " " +
+                    rs1.getInt(5)
+                );
+            }
+
+            // ii. Females born between 2000 and 2005
+            ResultSet rs2 = st.executeQuery(
+                "SELECT * FROM Person WHERE gender='Female' AND bornyear BETWEEN 2000 AND 2005");
+
+            System.out.println("\nFemales born between 2000 and 2005:");
+            while (rs2.next()) {
+                System.out.println(
+                    rs2.getInt(1) + " " +
+                    rs2.getString(2) + " " +
+                    rs2.getString(3) + " " +
+                    rs2.getString(4) + " " +
+                    rs2.getInt(5)
+                );
+            }
+
+            // Close Connection
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+🧠 Important Points (for exam)
+Uses two SELECT queries
+
+Query 1: bornyear = 1986
+
+Query 2: gender='Female' AND bornyear BETWEEN 2000 AND 2005
+
+Uses Statement and ResultSet
+
+Output printed using rs.get...()
+
+If you want, I can also give:
+
+Ultra-short exam version
+
+Same program using PreparedStatement
+
+Viva questions from SQL search queries
+
+
+Q20. Create a JSP page, which accepts user name in a text box and greets the user 
+according to the time on server side.  
+ 
+Example: If user name is Admin 
+Output: If it is morning then display message in red color as,  
+Good morning Admin  
+Today’s date: dd/mm/yyyy format  
+Current time: hh:mm:ss format  
+ 
+If it is afternoon then display message in green color as,  
+Good afternoon Admin  
+Today’s date: dd/mm/yyyy format  
+Current time: hh:mm:ss format  
+ 
+If it is evening then display message in blue color as,  
+Good evening Admin  
+Today’s date: dd/mm/yyyy format  
+Current time: hh:mm:ss format  
+  
+short and easy without skipping any line
+
+Here is a short and easy complete JSP solution (HTML + JSP, no lines skipped):
+
+✅ 1. HTML Page (greet.html)
+<html>
+<head>
+    <title>Greeting</title>
+</head>
+<body>
+    <form action="greet.jsp" method="post">
+        Enter Name: <input type="text" name="uname"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+✅ 2. JSP Page (greet.jsp)
+<%@ page import="java.util.*, java.text.*" %>
+
+<html>
+<head>
+    <title>Greeting Result</title>
+</head>
+<body>
+
+<%
+    String name = request.getParameter("uname");
+
+    Date d = new Date();
+    Calendar cal = Calendar.getInstance();
+    int hour = cal.get(Calendar.HOUR_OF_DAY);
+
+    SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
+
+    String date = sdfDate.format(d);
+    String time = sdfTime.format(d);
+
+    String msg = "";
+    String color = "";
+
+    if (hour < 12) {
+        msg = "Good morning " + name;
+        color = "red";
+    } else if (hour < 17) {
+        msg = "Good afternoon " + name;
+        color = "green";
+    } else {
+        msg = "Good evening " + name;
+        color = "blue";
+    }
+%>
+
+<h2 style="color:<%= color %>;"><%= msg %></h2>
+<h3>Today's date: <%= date %></h3>
+<h3>Current time: <%= time %></h3>
+
+</body>
+</html>
+🧠 Important Points (for exam)
+Uses Calendar to get current hour
+
+Uses SimpleDateFormat for:
+
+Date → dd/MM/yyyy
+
+Time → HH:mm:ss
+
+Color changes using <h2 style="color:...">
+
+Greeting based on time:
+
+Morning (<12)
+
+Afternoon (<17)
+
+Evening (else)
+
+If you want, I can also give:
+
+Ultra-short exam writing version
+
+Same using only JSP (no HTML page)
+
+Viva questions from JSP date & time
+
+
+Q21. Write a Servlet program to display number of times user has visited the page. (Use 
+cookies)
+short and easy without skipping any line
+
+Here is a short and easy Servlet program using Cookies (complete, no lines skipped):
+
+✅ Servlet Program (VisitServlet.java)
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class VisitServlet extends HttpServlet {
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        int count = 0;
+
+        // Get Cookies
+        Cookie[] cookies = request.getCookies();
+        boolean found = false;
+
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                if (cookies[i].getName().equals("count")) {
+                    count = Integer.parseInt(cookies[i].getValue());
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (found) {
+            count++;
+        } else {
+            count = 1;
+        }
+
+        // Create/Update Cookie
+        Cookie c = new Cookie("count", String.valueOf(count));
+        response.addCookie(c);
+
+        // Display Count
+        out.println("<h2>You have visited this page " + count + " times</h2>");
+    }
+}
+🧠 Important Points (for exam)
+Uses Cookie to store visit count
+
+request.getCookies() to read cookies
+
+response.addCookie() to update cookie
+
+Count increases on every visit
+
+First visit → count = 1
+
+If you want, I can also give:
+
+Difference between Q12 and Q21 (important for exams)
+
+web.xml configuration
+
+Ultra-short writing version
+
+
+Q22. Consider a table as District (Name, area, population). Write a JDBC program to 
+implement search and delete operations on a District table.
+
+short and easy without skipping any line
+
+Here is a short and easy JDBC program (complete, no lines skipped):
+
+✅ SQL: Create Table and Insert Records
+CREATE TABLE District (
+    Name VARCHAR(50),
+    area DOUBLE,
+    population INT
+);
+
+INSERT INTO District VALUES
+('Pune', 15600, 9000000),
+('Mumbai', 603, 12000000),
+('Nashik', 15582, 6100000),
+('Nagpur', 9892, 4600000),
+('Satara', 10480, 3000000);
+✅ Java Program (DistrictJDBC.java)
+import java.sql.*;
+import java.util.Scanner;
+
+public class DistrictJDBC {
+    public static void main(String[] args) {
+        try {
+            // Load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Create Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test", "root", "root");
+
+            Scanner sc = new Scanner(System.in);
+
+            // Search Operation
+            System.out.print("Enter District Name to Search: ");
+            String name = sc.nextLine();
+
+            PreparedStatement ps = con.prepareStatement(
+                "SELECT * FROM District WHERE Name=?");
+            ps.setString(1, name);
+
+            ResultSet rs = ps.executeQuery();
+
+            System.out.println("Search Result:");
+            while (rs.next()) {
+                System.out.println(
+                    rs.getString(1) + " " +
+                    rs.getDouble(2) + " " +
+                    rs.getInt(3)
+                );
+            }
+
+            // Delete Operation
+            System.out.print("\nEnter District Name to Delete: ");
+            String del = sc.nextLine();
+
+            PreparedStatement ps2 = con.prepareStatement(
+                "DELETE FROM District WHERE Name=?");
+            ps2.setString(1, del);
+
+            int i = ps2.executeUpdate();
+
+            if (i > 0) {
+                System.out.println("Record Deleted Successfully");
+            } else {
+                System.out.println("Record Not Found");
+            }
+
+            // Close Connection
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+🧠 Important Points (for exam)
+Uses PreparedStatement for search and delete
+
+Search query: SELECT * FROM District WHERE Name=?
+
+Delete query: DELETE FROM District WHERE Name=?
+
+Uses executeQuery() and executeUpdate()
+
+User input taken using Scanner
+
+If you want, I can also give:
+
+Ultra-short exam writing version
+
+Menu-driven version
+
+Viva questions from JDBC search & delete
+
+
+Q23. Create table Emp(ENo EName Salary). Write a JDBC program to delete the details of 
+employee on the basis of employee number. Accept employee number through 
+command line. Display all the details of employees.
+
+short and easy without skipping any line
+
+Here is a short and easy JDBC program (complete, no lines skipped):
+
+✅ SQL: Create Table and Insert Records
+CREATE TABLE Emp (
+    ENo INT,
+    EName VARCHAR(50),
+    Salary DOUBLE
+);
+
+INSERT INTO Emp VALUES
+(1, 'Amit', 50000),
+(2, 'Sneha', 60000),
+(3, 'Ravi', 45000),
+(4, 'Neha', 70000),
+(5, 'Kiran', 55000);
+✅ Java Program (EmpDelete.java)
+import java.sql.*;
+
+public class EmpDelete {
+    public static void main(String[] args) {
+        try {
+            // Check command line argument
+            if (args.length == 0) {
+                System.out.println("Please provide Employee Number");
+                return;
+            }
+
+            int eno = Integer.parseInt(args[0]);
+
+            // Load Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Create Connection
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test", "root", "root");
+
+            // Delete record
+            PreparedStatement ps = con.prepareStatement(
+                "DELETE FROM Emp WHERE ENo=?");
+            ps.setInt(1, eno);
+
+            int i = ps.executeUpdate();
+
+            if (i > 0) {
+                System.out.println("Record Deleted Successfully");
+            } else {
+                System.out.println("Record Not Found");
+            }
+
+            // Display all records
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM Emp");
+
+            System.out.println("\nEmployee Details:");
+            while (rs.next()) {
+                System.out.println(
+                    rs.getInt(1) + " " +
+                    rs.getString(2) + " " +
+                    rs.getDouble(3)
+                );
+            }
+
+            // Close Connection
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+🧠 Important Points (for exam)
+Employee number taken from command line (args[0])
+
+Uses PreparedStatement for delete
+
+Query: DELETE FROM Emp WHERE ENo=?
+
+Displays all records using SELECT * FROM Emp
+
+Uses both executeUpdate() and executeQuery()
+
+If you want, I can also give:
+
+How to run with command line argument
+
+Ultra-short exam version
+
+Viva questions from JDBC delete operations
+
+
+Q24. Write a Servlet program to display number of times user has visited the page.  
+(Use Session) 
+
+short and easy without skipping any line
+
+Here is a short and easy Servlet program using Session (complete, no lines skipped):
+
+✅ Servlet Program (SessionVisitServlet.java)
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class SessionVisitServlet extends HttpServlet {
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Get Session
+        HttpSession session = request.getSession();
+
+        Integer count = (Integer) session.getAttribute("count");
+
+        if (count == null) {
+            count = 1;
+        } else {
+            count++;
+        }
+
+        // Set updated count
+        session.setAttribute("count", count);
+
+        // Display count
+        out.println("<h2>You have visited this page " + count + " times</h2>");
+    }
+}
+🧠 Important Points (for exam)
+Uses HttpSession instead of cookies
+
+request.getSession() creates/gets session
+
+session.getAttribute() to read data
+
+session.setAttribute() to update count
+
+First visit → count = 1
+
+If you want, I can also give:
+
+Difference: Cookies vs Session (very important)
+
+Ultra-short exam version
+
+Flow diagram for better understanding
+
+
+Q25. Write a servlet program to display IP address, browser type, current date and time of 
+server. 
+
+short and easy without skipping any line
+
+Here is a short and easy Servlet program (complete, no lines skipped):
+
+✅ Servlet Program (InfoServlet.java)
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.util.Date;
+
+public class InfoServlet extends HttpServlet {
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Get IP Address
+        String ip = request.getRemoteAddr();
+
+        // Get Browser Type
+        String browser = request.getHeader("User-Agent");
+
+        // Get Current Date and Time
+        Date date = new Date();
+
+        // Display Output
+        out.println("<h2>IP Address: " + ip + "</h2>");
+        out.println("<h2>Browser Type: " + browser + "</h2>");
+        out.println("<h2>Server Date and Time: " + date + "</h2>");
+    }
+}
+🧠 Important Points (for exam)
+IP → request.getRemoteAddr()
+
+Browser → request.getHeader("User-Agent")
+
+Date & Time → new Date()
+
+Output using PrintWriter
+
+If you want, I can give:
+
+Ultra-short exam revision sheet (Q1–Q25)
+
+Common viva questions from all programs
+
+1 universal template to remember all JDBC questions
+
+
+
+
