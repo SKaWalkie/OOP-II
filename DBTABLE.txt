@@ -1,0 +1,114 @@
+🔴 Q1 – Employee
+CREATE DATABASE company;
+USE company;
+
+CREATE TABLE Employee(
+  Eno INT PRIMARY KEY,
+  EName VARCHAR(50),
+  Designation VARCHAR(50),
+  Salary DOUBLE
+);
+🟡 Q3 – Patient (Table only enough)
+CREATE TABLE Patient(
+  PNo INT,
+  PName VARCHAR(50),
+  Age INT,
+  Disease VARCHAR(50)
+);
+🔴 Q6 – Product (with data)
+CREATE DATABASE company;
+USE company;
+
+CREATE TABLE Product(
+  Pid INT,
+  Pname VARCHAR(50),
+  Price DOUBLE
+);
+
+INSERT INTO Product VALUES
+(1,'Laptop',50000),
+(2,'Mobile',15000),
+(3,'TV',30000),
+(4,'Mouse',500),
+(5,'Keyboard',800);
+🟡 Q8 – DONAR
+CREATE TABLE DONAR(
+  Did INT,
+  DName VARCHAR(50),
+  BloodGroup VARCHAR(10)
+);
+🔴 Q9 – Employee
+CREATE DATABASE company;
+USE company;
+
+CREATE TABLE Employee(
+  Id INT,
+  Name VARCHAR(50),
+  Salary DOUBLE
+);
+🔵 Q10 – Database only
+CREATE DATABASE company;
+🟡 Q16 – Login Table
+CREATE TABLE Users(
+  Username VARCHAR(50),
+  Password VARCHAR(50)
+);
+
+INSERT INTO Users VALUES('admin','admin');
+🔴 Q18 – Course
+CREATE DATABASE college;
+USE college;
+
+CREATE TABLE Course(
+  Code INT,
+  Name VARCHAR(50),
+  Department_Name VARCHAR(50),
+  Number_of_Students INT
+);
+
+INSERT INTO Course VALUES
+(1,'BSc Computer Science','Science',100),
+(2,'BCom','Commerce',80);
+🔴 Q19 – Person
+CREATE DATABASE test;
+USE test;
+
+CREATE TABLE Person(
+  Pno INT,
+  Pname VARCHAR(50),
+  Pcity VARCHAR(50),
+  Gender VARCHAR(10),
+  BornYear INT
+);
+🔴 Q22 – District
+CREATE DATABASE test;
+USE test;
+
+CREATE TABLE District(
+  Name VARCHAR(50),
+  Area DOUBLE,
+  Population INT
+);
+🔴 Q23 – Emp
+CREATE DATABASE test;
+USE test;
+
+CREATE TABLE Emp(
+  ENo INT,
+  EName VARCHAR(50),
+  Salary DOUBLE
+);
+🎯 FINAL SHORTCUT (VERY IMPORTANT)
+
+👉 If you don’t remember all:
+
+Write this universal format and just change table name + fields:
+
+CREATE DATABASE test;
+USE test;
+
+CREATE TABLE TableName(
+  Field1 datatype,
+  Field2 datatype,
+  Field3 datatype
+);
