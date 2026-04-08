@@ -1,0 +1,677 @@
+SLIP - 1
+  Q1. Write a Java program to display all the alphabets between ‘A’ to ‘Z’ after every 2 seconds. 
+    Change the priority of the thread to 8.
+
+    public class AlphabetPrinter {
+    public static void main(String[] args) throws Exception {
+        Thread.currentThread().setPriority(8);
+        for (char c = 'A'; c <= 'Z'; c++) {
+            System.out.print(c + " ");
+            Thread.sleep(2000); 
+        }
+    }
+}
+
+Q2. Write a Java program to accept the details of Employee (Eno, EName, Designation, Salary) from a user. 
+  Write JDBC program to perform following operations:
+i. Store employee details into the Employee table.
+ii. Display all details of Employee from the table.
+
+  CREATE TABLE Employee (
+    Eno INT PRIMARY KEY,
+    EName VARCHAR(50),
+    Designation VARCHAR(50),
+    Salary DOUBLE
+);
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class EmployeeDB {
+    public static void main(String[] args) throws Exception {
+        // 1. Connect to Database (Update URL, User, Password)
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/yourdb", "root", "password");
+        Scanner sc = new Scanner(System.in);
+
+        // 2. Accept Input & Insert (Operation i)
+        System.out.println("Enter Eno, EName, Designation, Salary:");
+        PreparedStatement ps = con.prepareStatement("INSERT INTO Employee VALUES (?, ?, ?, ?)");
+        ps.setInt(1, sc.nextInt());
+        ps.setString(2, sc.next());
+        ps.setString(3, sc.next());
+        ps.setDouble(4, sc.nextDouble());
+        ps.executeUpdate();
+        
+        System.out.println("Employee Saved!\n--- All Employees ---");
+
+        // 3. Display Data (Operation ii)
+        ResultSet rs = con.createStatement().executeQuery("SELECT * FROM Employee");
+        while (rs.next()) {
+            System.out.printf("%d | %s | %s | %.2f%n", 
+                rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4));
+        }
+        
+        con.close(); 
+        sc.close();
+    }
+}
+
+SLIP - 2
+
+Q1. Write a java program to read ‘N’ names of your friends, store it into HashSet and display them in ascending order. 
+
+  import java.util.*;
+
+public class FriendsList {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter N: ");
+        int n = sc.nextInt();
+        
+        HashSet<String> set = new HashSet<>();
+        System.out.println("Enter " + n + " names:");
+        for (int i = 0; i < n; i++) {
+            set.add(sc.next());
+        }
+        
+        // Passing HashSet to TreeSet automatically sorts it in ascending order
+        System.out.println("Sorted Names: " + new TreeSet<>(set));
+        sc.close();
+    }
+}
+
+Q2. Design HTML login screen. Accept the user name and password from the user. 
+  Write a servlet program to accept the login name and password. 
+  Check if it is “admin” and “admin” respectively or not. 
+  If it is correct then display Welcome message otherwise display error message.
+
+  index.html
+  <form action="LoginServlet" method="post">
+    User: <input type="text" name="u"><br>
+    Pass: <input type="password" name="p"><br>
+    <input type="submit" value="Login">
+</form>
+
+  java
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+        
+        if ("admin".equals(req.getParameter("u")) && "admin".equals(req.getParameter("p"))) {
+            out.print("<h3>Welcome!</h3>");
+        } else {
+            out.print("<h3>Error: Invalid credentials.</h3>");
+        }
+    }
+}
+
+SLIP-3
+
+Q1. Write a Java program to create LinkedList of String objects and perform the Following:
+i. Add element at the end of the list
+ii. Display the contents of list in reverse order
+
+  import java.util.LinkedList;
+
+public class ReverseList {
+    public static void main(String[] args) {
+        LinkedList<String> list = new LinkedList<>();
+        list.add("First");
+        list.add("Second");
+        
+        // i. Add element at the end
+        list.addLast("Third"); 
+        
+        // ii. Display the contents in reverse order
+        list.descendingIterator().forEachRemaining(s -> System.out.print(s + " "));
+    }
+}
+
+Q2. Write a JSP program to display the details of Patient (PNo, PName, age, disease)
+  from database and display it in tabular form on browser.
+
+  CREATE TABLE Patient (
+    PNo INT PRIMARY KEY,
+    PName VARCHAR(50),
+    age INT,
+    disease VARCHAR(100)
+);
+
+  <%@ page import="java.sql.*" %>
+<table border="1">
+    <tr><th>PNo</th><th>PName</th><th>Age</th><th>Disease</th></tr>
+    <%
+        // 1. Connect to Database (Update URL, User, Password)
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        
+        // 2. Execute Query
+        ResultSet rs = con.createStatement().executeQuery("SELECT PNo, PName, age, disease FROM Patient");
+        
+        // 3. Display Data in Table
+        while(rs.next()) {
+    %>
+    <tr>
+        <td><%= rs.getInt("PNo") %></td>
+        <td><%= rs.getString("PName") %></td>
+        <td><%= rs.getInt("age") %></td>
+        <td><%= rs.getString("disease") %></td>
+    </tr>
+    <%  } con.close(); %>
+</table>
+
+SLIP-4
+
+Q1. Write a Java program to store city names and their STD codes using an appropriate 
+collection and perform following operations:  
+i. Add a new city and its code (No duplicates)  
+ii. Search for a city name and display the code.
+
+  import java.util.*;
+
+public class CitySTD {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        HashMap<String, String> map = new HashMap<>();
+        
+        // i. Add a new city and its code (HashMap keys are inherently unique)
+        System.out.print("Enter City and STD Code to add: ");
+        map.put(sc.next(), sc.next()); 
+        
+        // ii. Search for a city name and display the code
+        System.out.print("Enter City to search: ");
+        String searchCity = sc.next();
+        
+        System.out.println(map.containsKey(searchCity) ? 
+            "STD Code: " + map.get(searchCity) : "City not found!");
+            
+        sc.close();
+    }
+}
+
+Q2. Write a Java program using Runnable interface to blink Text on the frame.
+
+  import javax.swing.*;
+
+public class BlinkText extends JFrame implements Runnable {
+    JLabel label = new JLabel("BLINKING TEXT", SwingConstants.CENTER);
+
+    public BlinkText() {
+        add(label);
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+        new Thread(this).start(); // Starts the Runnable thread
+    }
+
+    public void run() {
+        try {
+            while (true) {
+                label.setVisible(!label.isVisible()); // Toggles text on/off
+                Thread.sleep(500); // Wait half a second
+            }
+        } catch (Exception e) {}
+    }
+
+    public static void main(String[] args) {
+        new BlinkText();
+    }
+}
+
+SLIP-5
+
+  Q1. Write a Java program to accept ‘n’ integers from the user and store them in a collection. 
+Display them in the sorted order. The collection should not accept duplicate elements. 
+(Use a suitable collection). Search for a particular element using predefined search 
+method in the Collection framework.
+
+  import java.util.*;
+
+public class UniqueSortSearch {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter N: ");
+        int n = sc.nextInt();
+
+        // TreeSet automatically sorts elements and ignores duplicates
+        TreeSet<Integer> set = new TreeSet<>();
+        System.out.println("Enter " + n + " integers:");
+        for (int i = 0; i < n; i++) {
+            set.add(sc.nextInt());
+        }
+
+        // Convert to ArrayList to use Collections.binarySearch
+        ArrayList<Integer> list = new ArrayList<>(set);
+        System.out.println("Sorted Unique Elements: " + list);
+
+        System.out.print("Enter element to search: ");
+        int searchKey = sc.nextInt();
+        int index = Collections.binarySearch(list, searchKey);
+        
+        System.out.println(index >= 0 ? "Found at index: " + index : "Element not found!");
+        sc.close();
+    }
+}
+
+Q2.  Write a program that implements a multi-thread application that has three threads. First 
+thread generates random integer after every 1 second and if the value is even, second 
+thread computes the square of the number and prints. If the value is odd, the third 
+thread will print the value of cube of the number.
+
+  public class MultiThreadDemo {
+    static int n;
+    static boolean isNew = false;
+    static final Object lock = new Object();
+
+    // Helper method to create Thread 2 (Even) and Thread 3 (Odd)
+    static void startWorker(boolean isEven) {
+        new Thread(() -> {
+            try {
+                while (true) {
+                    synchronized (lock) {
+                        // Wait until there is a new number matching this thread's condition
+                        while (!isNew || (n % 2 == 0) != isEven) lock.wait();
+                        
+                        System.out.println(isEven ? "Square: " + (n * n) : "Cube: " + (n * n * n));
+                        isNew = false; // Reset flag after processing
+                    }
+                }
+            } catch (Exception e) {}
+        }).start();
+    }
+
+    public static void main(String[] args) {
+        startWorker(true);  // Thread 2: Handles Even numbers
+        startWorker(false); // Thread 3: Handles Odd numbers
+
+        // Thread 1: Generates random numbers every 1 second
+        new Thread(() -> { 
+            try {
+                while (true) {
+                    synchronized (lock) {
+                        n = (int) (Math.random() * 100);
+                        System.out.println("\nGenerated: " + n);
+                        isNew = true;
+                        lock.notifyAll(); // Wake up waiting threads
+                    }
+                    Thread.sleep(1000); 
+                }
+            } catch (Exception e) {}
+        }).start();
+    }
+}
+
+SLIP-6
+
+  Q1. Write a program in which thread sleep for 2 seconds in the loop and displays numbers 
+in reverse order from 100 to 1. Change the name of thread to “reverse order”.
+
+  public class ReverseThread {
+    public static void main(String[] args) throws Exception {
+        Thread.currentThread().setName("reverse order");
+        for (int i = 100; i >= 1; i--) {
+            System.out.print(i + " ");
+            Thread.sleep(2000);
+        }
+    }
+}
+
+Q2. Consider a table Product (Pid, Pname, Price). Insert at least five records into the table. 
+Write a JDBC program to perform following operations: 
+i. Display all the records from a Product table. 
+ii. Display the product details whose price is > 1000
+
+  CREATE TABLE Product (Pid INT PRIMARY KEY, Pname VARCHAR(50), Price DOUBLE);
+INSERT INTO Product VALUES 
+(1, 'Mouse', 500), 
+(2, 'Keyboard', 1200), 
+(3, 'Monitor', 8000), 
+(4, 'Pendrive', 800), 
+(5, 'Headset', 1500);
+
+import java.sql.*;
+
+public class ProductDB {
+    public static void main(String[] args) throws Exception {
+        // Connect to Database
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        Statement st = con.createStatement();
+        
+        System.out.println("--- i. All Products ---");
+        ResultSet rs1 = st.executeQuery("SELECT * FROM Product");
+        while(rs1.next()) 
+            System.out.printf("%d | %s | %.2f%n", rs1.getInt(1), rs1.getString(2), rs1.getDouble(3));
+        
+        System.out.println("\n--- ii. Products with Price > 1000 ---");
+        ResultSet rs2 = st.executeQuery("SELECT * FROM Product WHERE Price > 1000");
+        while(rs2.next()) 
+            System.out.printf("%d | %s | %.2f%n", rs2.getInt(1), rs2.getString(2), rs2.getDouble(3));
+        
+        con.close();
+    }
+}
+
+SLIP-7
+
+  Q1.  Write a java program to define a thread for printing text on output screen for ‘n’ number 
+times. Create 3 threads and run them. Pass the text ‘n’ parameters to the thread 
+constructor.  
+  Example:  
+i. First thread prints “COVID19” 10 times.  
+ii. Second thread prints “LOCKDOWN2020” 20 times. 
+iii. Third thread prints “VACCINATED2021” 30 times.
+
+public class PrintThread extends Thread {
+    String text;
+    int n;
+
+    public PrintThread(String text, int n) {
+        this.text = text;
+        this.n = n;
+    }
+
+    public void run() {
+        for (int i = 0; i < n; i++) {
+            System.out.println(text);
+        }
+    }
+
+    public static void main(String[] args) {
+        new PrintThread("COVID19", 10).start();
+        new PrintThread("LOCKDOWN2020", 20).start();
+        new PrintThread("VACCINATED2021", 30).start();
+    }
+}
+  
+  Q2. Write a program to perform Arithmetic operations such as Addition, Subtraction, 
+Multiplication and Division. Design a HTML to accept two numbers in text box and 
+radio buttons to display operations. On submit display result as per the selected 
+operation on next page using JSP. 
+
+  index.html
+  <form action="calc.jsp">
+    N1: <input type="number" name="n1" step="any" required><br>
+    N2: <input type="number" name="n2" step="any" required><br>
+    <input type="radio" name="op" value="+" checked> Add
+    <input type="radio" name="op" value="-"> Sub
+    <input type="radio" name="op" value="*"> Mul
+    <input type="radio" name="op" value="/"> Div<br>
+    <input type="submit" value="Calculate">
+</form>
+
+  .jsp
+  <%
+    double n1 = Double.parseDouble(request.getParameter("n1"));
+    double n2 = Double.parseDouble(request.getParameter("n2"));
+    char op = request.getParameter("op").charAt(0);
+    
+    // Using a chained ternary operator for the shortest possible logic
+    double res = (op == '+') ? n1 + n2 : (op == '-') ? n1 - n2 : (op == '*') ? n1 * n2 : n1 / n2;
+%>
+<h3>Result: <%= n1 %> <%= op %> <%= n2 %> = <%= res %></h3>
+
+  SLIP-8
+
+  Q1. Write a java program to read ‘n’ names of your friends, store it into linked list, also 
+display contents using ListIterator interface. 
+
+import java.util.*;
+
+public class Friends {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        LinkedList<String> list = new LinkedList<>();
+        
+        System.out.print("Enter N: ");
+        int n = sc.nextInt();
+        
+        System.out.println("Enter " + n + " names:");
+        while (n-- > 0) list.add(sc.next());
+        
+        System.out.println("\n--- Displaying using ListIterator ---");
+        ListIterator<String> lit = list.listIterator();
+        while (lit.hasNext()) {
+            System.out.print(lit.next() + " ");
+        }
+        
+        sc.close();
+    }
+}
+
+   Q2. Write a Java program to display information about all columns in the DONAR table 
+using ResultSetMetaData.
+
+     import java.sql.*;
+
+public class DonarMeta {
+    public static void main(String[] args) throws Exception {
+        // Connect to Database (Update URL, User, Password)
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        
+        // Execute query and get ResultSetMetaData in one line
+        ResultSetMetaData meta = con.createStatement().executeQuery("SELECT * FROM DONAR").getMetaData();
+        
+        // Loop through all columns and print details
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            System.out.printf("Column %d: %s | Type: %s | Size: %d%n", 
+                i, meta.getColumnName(i), meta.getColumnTypeName(i), meta.getColumnDisplaySize(i));
+        }
+        
+        con.close();
+    }
+}
+
+SLIP-9
+
+  Q1. Write a JSP program to check whether given number is Perfect or not.
+
+<form>
+    Number: <input type="number" name="n" required>
+    <input type="submit" value="Check">
+</form>
+
+<%
+    String val = request.getParameter("n");
+    if (val != null) {
+        int n = Integer.parseInt(val), sum = 0;
+        for (int i = 1; i < n; i++) {
+            if (n % i == 0) sum += i;
+        }
+        out.print("<h3>" + n + (sum == n ? " is a Perfect Number" : " is NOT a Perfect Number") + "</h3>");
+    }
+%>
+  
+  Q2. Write a JDBC program to insert the records into the table Employee (Id, name, salary) 
+using PreparedStatement interface. Accept details of Employees from user. Also 
+display the Employees whose name starts with “A”.
+
+  SQL
+  CREATE TABLE Employee (Id INT PRIMARY KEY, name VARCHAR(50), salary DOUBLE);
+
+JAVA
+  import java.sql.*;
+import java.util.Scanner;
+
+public class EmployeeDB {
+    public static void main(String[] args) throws Exception {
+        // 1. Connect to DB
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        Scanner sc = new Scanner(System.in);
+
+        // 2. Accept Input & Insert using PreparedStatement
+        System.out.println("Enter ID, Name, Salary:");
+        PreparedStatement ps = con.prepareStatement("INSERT INTO Employee VALUES (?, ?, ?)");
+        ps.setInt(1, sc.nextInt());
+        ps.setString(2, sc.next());
+        ps.setDouble(3, sc.nextDouble());
+        ps.executeUpdate();
+        System.out.println("Record Inserted!");
+
+        // 3. Display Employees whose name starts with 'A'
+        System.out.println("\n--- Employees starting with 'A' ---");
+        ResultSet rs = con.createStatement().executeQuery("SELECT * FROM Employee WHERE name LIKE 'A%'");
+        while (rs.next()) {
+            System.out.printf("%d | %s | %.2f%n", rs.getInt(1), rs.getString(2), rs.getDouble(3));
+        }
+
+        con.close();
+        sc.close();
+    }
+}
+
+SLIP-10
+
+  Q1.  Create a java program to store city names and their STD codes using an appropriate 
+collection. Do the following operations: 
+i. Add a new city and its code. (No duplicate city) 
+ii. Search for a city name and display the code.
+
+  import java.util.*;
+
+public class CityMap {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Map<String, String> map = new HashMap<>();
+
+        // i. Add a new city and its code
+        System.out.print("Enter City and STD Code to add: ");
+        map.put(sc.next(), sc.next());
+
+        // ii. Search for a city name and display the code
+        System.out.print("Enter City to search: ");
+        String city = sc.next();
+        
+        System.out.println(map.containsKey(city) ? "STD Code: " + map.get(city) : "City Not Found!");
+    }
+}
+
+Q2. Write a Java program to display information about the database and list all the tables in the database. 
+  (Use DatabaseMetaData)
+
+  import java.sql.*;
+
+public class DBInfo {
+    public static void main(String[] args) throws Exception {
+        // Connect to the database
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        DatabaseMetaData meta = con.getMetaData();
+        
+        // Display Database Information
+        System.out.println("DB Product: " + meta.getDatabaseProductName());
+        System.out.println("DB Version: " + meta.getDatabaseProductVersion());
+        System.out.println("Driver: " + meta.getDriverName());
+        
+        // List all tables
+        System.out.println("\n--- Tables in Database ---");
+        ResultSet rs = meta.getTables(null, null, "%", new String[]{"TABLE"});
+        
+        while (rs.next()) {
+            System.out.println(rs.getString(3)); // Column 3 contains the TABLE_NAME
+        }
+        
+        con.close();
+    }
+}
+
+SLIP-11
+
+  Q1. Write a JSP program to calculate sum of digit of a given number. Display sum in Red 
+Color.
+
+  <form>
+    Number: <input type="number" name="n" required>
+    <input type="submit" value="Calculate">
+</form>
+
+<%
+    String val = request.getParameter("n");
+    if (val != null) {
+        int n = Math.abs(Integer.parseInt(val)), sum = 0;
+        while (n > 0) { 
+            sum += n % 10; 
+            n /= 10; 
+        }
+        out.print("<h3 style='color:red;'>Sum of digits: " + sum + "</h3>");
+    }
+%>
+
+Q2. Write a Multithreading program in java to display the number’s from 1 to 100 
+continuously in a TextField by clicking on button.
+
+  import javax.swing.*;
+import java.awt.FlowLayout;
+
+public class NumberThread {
+    public static void main(String[] args) {
+        JFrame f = new JFrame("Counter");
+        JTextField tf = new JTextField(10);
+        JButton b = new JButton("Start");
+
+        b.addActionListener(e -> new Thread(() -> {
+            for (int i = 1; i <= 100; i++) {
+                tf.setText(String.valueOf(i));
+                try { Thread.sleep(100); } catch (Exception ex) {} // 100ms delay
+            }
+        }).start());
+
+        f.setLayout(new FlowLayout());
+        f.add(tf);
+        f.add(b);
+        f.setSize(250, 100);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+    }
+}
+
+SLIP-12
+
+  Q1.  Write a java program to display name and priority of a Thread. Change the priority of 
+thread to 7. 
+
+public class ThreadPriority {
+    public static void main(String[] args) {
+        Thread t = Thread.currentThread();
+        System.out.println("Name: " + t.getName() + " | Priority: " + t.getPriority());
+        
+        t.setPriority(7); // Change priority to 7
+        System.out.println("Updated Priority: " + t.getPriority());
+    }
+}
+  
+  Q2. Write a SERVLET program which counts how many times a user has visited a web 
+page. If user is visiting the page for the first time, display a welcome message. If the 
+user is revisiting the page, display the number of times visited. (Use Cookie) 
+
+  import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+@WebServlet("/VisitServlet")
+public class VisitServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("text/html");
+        int count = 1;
+        Cookie[] cookies = req.getCookies();
+        
+        // Check for existing cookie
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if ("visitCount".equals(c.getName())) {
+                    count = Integer.parseInt(c.getValue()) + 1;
+                }
+            }
+        }
+        
+        // Update cookie with new count
+        res.addCookie(new Cookie("visitCount", String.valueOf(count)));
+        
+        // Display output
+        res.getWriter().print("<h3>" + (count == 1 ? "Welcome! This is your first visit." : "You have visited " + count + " times.") + "</h3>");
+    }
+}
