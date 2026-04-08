@@ -675,3 +675,648 @@ public class VisitServlet extends HttpServlet {
         res.getWriter().print("<h3>" + (count == 1 ? "Welcome! This is your first visit." : "You have visited " + count + " times.") + "</h3>");
     }
 }
+
+SLIP-13
+
+Q1. Write a java program to display name and priority of a Thread. Change the name of 
+thread as “Java Thread”. Also make thread alive. 
+
+public class ThreadDemo {
+    public static void main(String[] args) {
+        Thread t = new Thread(() -> {}); 
+        
+        System.out.println("Name: " + t.getName() + " | Priority: " + t.getPriority());
+        
+        t.setName("Java Thread"); // Change name
+        t.start(); // Make thread alive
+        
+        System.out.println("New Name: " + t.getName() + " | Is Alive: " + t.isAlive());
+    }
+}
+
+Q2.  Construct a linked List containing names of colours: red, blue, yellow and orange. 
+Write a menu driven program to do the following:   
+a. Display the contents of the List using an Iterator  
+b. Display the contents of the List in reverse order using a ListIterator   
+c. Create another list containing pink and green. Insert the elements of this list  
+between blue and yellow
+
+import java.util.*;
+
+public class ColorList {
+    public static void main(String[] args) {
+        LinkedList<String> list = new LinkedList<>(Arrays.asList("red", "blue", "yellow", "orange"));
+        Scanner sc = new Scanner(System.in);
+        
+        for (;;) {
+            System.out.print("\n1.Display 2.Reverse 3.Insert 4.Exit\nChoice: ");
+            int ch = sc.nextInt();
+            
+            if (ch == 1) {
+                // a. Display using Iterator
+                Iterator<String> it = list.iterator();
+                while (it.hasNext()) System.out.print(it.next() + " ");
+            } 
+            else if (ch == 2) {
+                // b. Display in reverse using ListIterator
+                ListIterator<String> lit = list.listIterator(list.size());
+                while (lit.hasPrevious()) System.out.print(lit.previous() + " ");
+            } 
+            else if (ch == 3) {
+                // c. Insert pink and green between blue and yellow
+                list.addAll(list.indexOf("blue") + 1, Arrays.asList("pink", "green"));
+                System.out.println("Updated List: " + list);
+            } 
+            else break;
+        }
+        sc.close();
+    }
+}
+
+SLIP-14
+
+Q1.  Create a Hash map by accepting input from user as Book name and Price. Display 
+the details of the hash map.
+
+import java.util.*;
+
+public class BookMap {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        HashMap<String, Double> map = new HashMap<>();
+        
+        System.out.print("Enter number of books: ");
+        for (int n = sc.nextInt(); n > 0; n--) {
+            System.out.print("Enter Book Name and Price: ");
+            map.put(sc.next(), sc.nextDouble());
+        }
+        
+        System.out.println("\nBook Details: " + map);
+        sc.close();
+    }
+}
+
+Q2. Write a servlet program to display IP address, browser type, current date and time of 
+server. 
+
+import java.io.IOException;
+import java.util.Date;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+@WebServlet("/InfoServlet")
+public class InfoServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("text/html");
+        res.getWriter().print("<h3>IP Address: " + req.getRemoteAddr() + 
+                              "<br>Browser: " + req.getHeader("User-Agent") + 
+                              "<br>Server Time: " + new Date() + "</h3>");
+    }
+}
+
+SLIP-15
+
+Q1.  Create a JSP page to accept a number from a user and display it in words: Example: 
+123 – One Two Three. The output should be in red color.
+
+JSP
+<form>
+    Number: <input type="number" name="n" required>
+    <input type="submit" value="Convert">
+</form>
+
+<%
+    String n = request.getParameter("n");
+    if (n != null) {
+        String[] words = {"Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
+        out.print("<h3 style='color:red;'>");
+        for (char c : n.toCharArray()) {
+            out.print(words[c - '0'] + " "); // '0' is ASCII 48
+        }
+        out.print("</h3>");
+    }
+%>
+
+Q2. Write a Multithreading program in java to display the characters from ‘A’ to ‘Z’ 
+continuously in a TextField by clicking on button.
+
+import javax.swing.*;
+import java.awt.FlowLayout;
+
+public class AlphabetThread {
+    public static void main(String[] args) {
+        JFrame f = new JFrame("A-Z Continuous");
+        JTextField tf = new JTextField(5);
+        JButton b = new JButton("Start");
+
+        b.addActionListener(e -> new Thread(() -> {
+            while (true) { // Loops continuously
+                for (char c = 'A'; c <= 'Z'; c++) {
+                    tf.setText(String.valueOf(c));
+                    try { Thread.sleep(200); } catch (Exception ex) {} // 200ms delay
+                }
+            }
+        }).start());
+
+        f.setLayout(new FlowLayout());
+        f.add(tf);
+        f.add(b);
+        f.setSize(250, 100);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setVisible(true);
+    }
+}
+
+SLIP-16
+
+Q1. Write a program in to display A to Z characters after every 2 seconds. Create a thread 
+and display information of thread as name of thread, priority of the thread.
+
+public class AZThread {
+    public static void main(String[] args) {
+        Thread t = new Thread(() -> {
+            for (char c = 'A'; c <= 'Z'; c++) {
+                System.out.print(c + " ");
+                try { Thread.sleep(2000); } catch (Exception e) {}
+            }
+        }, "AlphabetThread"); // Setting thread name in constructor
+        
+        System.out.println("Name: " + t.getName() + " | Priority: " + t.getPriority());
+        t.start();
+    }
+}
+
+Q2. Accept username and password from HTML. Write a JSP program to search them into 
+database, if found then display appropriate message on the browser otherwise display 
+error message.
+
+INDEX.HTML
+<form action="login.jsp" method="POST">
+    User: <input type="text" name="u" required> 
+    Pass: <input type="password" name="p" required> 
+    <input type="submit" value="Login">
+</form>
+
+JSP
+<%@ page import="java.sql.*" %>
+<%
+    String u = request.getParameter("u"), p = request.getParameter("p");
+    if (u != null && p != null) {
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        PreparedStatement ps = con.prepareStatement("SELECT 1 FROM users WHERE uname=? AND pass=?");
+        ps.setString(1, u); 
+        ps.setString(2, p);
+        
+        out.print("<h3>" + (ps.executeQuery().next() ? "Login Successful!" : "Invalid Credentials!") + "</h3>");
+        con.close();
+    }
+%>
+
+SLIP-17
+
+Q1.  Write a java program to accept names of ‘n’ cities, insert same into ArrayList collection 
+and display the contents of same array list. Remove the element of ArrayList at 
+particular index. Accepting index from user.
+
+import java.util.*;
+
+public class Cities {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        ArrayList<String> list = new ArrayList<>();
+        
+        System.out.print("Enter N, then N city names: ");
+        for (int n = sc.nextInt(); n > 0; n--) list.add(sc.next());
+        
+        System.out.println("List: " + list);
+        
+        System.out.print("Enter index to remove: ");
+        list.remove(sc.nextInt());
+        
+        System.out.println("Updated List: " + list);
+        sc.close();
+    }
+}
+
+Q2. Write a java program to solve producer consumer problem in which a producer 
+produces a value and consumer consume the value before producer generate the next 
+value. (Use thread synchronization) 
+
+public class ProducerConsumer {
+    static int val;
+    static boolean hasVal = false;
+    static final Object lock = new Object();
+
+    public static void main(String[] args) {
+        // Producer Thread
+        new Thread(() -> { 
+            try {
+                for (int i = 1; i <= 5; i++) {
+                    synchronized (lock) {
+                        while (hasVal) lock.wait(); // Wait if buffer is full
+                        System.out.println("Produced: " + (val = i));
+                        hasVal = true;
+                        lock.notify(); // Wake up consumer
+                    }
+                }
+            } catch (Exception e) {}
+        }).start();
+
+        // Consumer Thread
+        new Thread(() -> { 
+            try {
+                for (int i = 1; i <= 5; i++) {
+                    synchronized (lock) {
+                        while (!hasVal) lock.wait(); // Wait if buffer is empty
+                        System.out.println("Consumed: " + val);
+                        hasVal = false;
+                        lock.notify(); // Wake up producer
+                    }
+                }
+            } catch (Exception e) {}
+        }).start();
+    }
+}
+
+SLIP-18
+
+Q1. Write a JSP program which accepts UserName in a TextBox. Display greet message 
+to the user as “Welcome username”.
+
+<form>
+    Name: <input type="text" name="u" required>
+    <input type="submit" value="Greet">
+</form>
+
+<% 
+    String u = request.getParameter("u"); 
+    if (u != null) {
+        out.print("<h3>Welcome " + u + "</h3>"); 
+    }
+%>
+
+Q2. Create a table as Course (Code, name, department_name, number_of_students). Insert 
+values in the table. Write a JDBC program to perform following operations: 
+i. Update number_of_students of “BSc Computer Science” to 120.  
+ii. Delete the course details if number_of_students<10 
+
+CREATE TABLE Course (Code VARCHAR(10) PRIMARY KEY, name VARCHAR(50), department_name VARCHAR(50), number_of_students INT);
+INSERT INTO Course VALUES 
+('C1', 'BSc Computer Science', 'Science', 100),
+('C2', 'BA History', 'Arts', 5),
+('C3', 'BBA', 'Commerce', 50);
+
+import java.sql.*;
+
+public class CourseDB {
+    public static void main(String[] args) throws Exception {
+        // Connect to Database
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        Statement st = con.createStatement();
+        
+        // i. Update number_of_students of “BSc Computer Science” to 120
+        int updated = st.executeUpdate("UPDATE Course SET number_of_students = 120 WHERE name = 'BSc Computer Science'");
+        System.out.println("Updated records: " + updated);
+        
+        // ii. Delete the course details if number_of_students < 10
+        int deleted = st.executeUpdate("DELETE FROM Course WHERE number_of_students < 10");
+        System.out.println("Deleted records: " + deleted);
+        
+        con.close();
+    }
+}
+
+SLIP-19
+
+Q1. Write a java program to accept a String from a user and display each vowel from a 
+String after every 3 seconds. 
+
+import java.util.Scanner;
+
+public class VowelThread {
+    public static void main(String[] args) throws Exception {
+        System.out.print("Enter a string: ");
+        for (char c : new Scanner(System.in).nextLine().toCharArray()) {
+            if ("AEIOUaeiou".indexOf(c) != -1) {
+                System.out.print(c + " ");
+                Thread.sleep(3000); // Wait 3 seconds
+            }
+        }
+    }
+}
+
+Q2. Create table as Person(pno, pname, pcity, gender, bornyear). Write a JDBC program 
+to perform search operation on Person table. 
+i. Search all the person born in the year 1986. 
+ii. Search all the females born between 2000-2005. 
+
+CREATE TABLE Person (pno INT PRIMARY KEY, pname VARCHAR(50), pcity VARCHAR(50), gender CHAR(1), bornyear INT);
+INSERT INTO Person VALUES 
+(1, 'Alice', 'Pune', 'F', 1986),
+(2, 'Bob', 'Mumbai', 'M', 1986),
+(3, 'Charlie', 'Delhi', 'M', 2002),
+(4, 'Diana', 'Pune', 'F', 2003),
+(5, 'Eve', 'Mumbai', 'F', 2006);
+
+import java.sql.*;
+
+public class PersonSearch {
+    public static void main(String[] args) throws Exception {
+        // Connect to Database
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        Statement st = con.createStatement();
+        
+        System.out.println("--- i. Persons born in 1986 ---");
+        ResultSet rs1 = st.executeQuery("SELECT * FROM Person WHERE bornyear = 1986");
+        while (rs1.next()) 
+            System.out.printf("%d | %s | %s | %s | %d%n", rs1.getInt(1), rs1.getString(2), rs1.getString(3), rs1.getString(4), rs1.getInt(5));
+        
+        System.out.println("\n--- ii. Females born between 2000-2005 ---");
+        ResultSet rs2 = st.executeQuery("SELECT * FROM Person WHERE gender = 'F' AND bornyear BETWEEN 2000 AND 2005");
+        while (rs2.next()) 
+            System.out.printf("%d | %s | %s | %s | %d%n", rs2.getInt(1), rs2.getString(2), rs2.getString(3), rs2.getString(4), rs2.getInt(5));
+        
+        con.close();
+    }
+}
+
+SLIP-20
+
+Q1. Write a java program to accept ‘N’ student names through command line, store them 
+into the appropriate Collection and display them by using Iterator. 
+
+import java.util.*;
+
+public class Students {
+    public static void main(String[] args) {
+        // Store command line arguments (args) into an ArrayList
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(args));
+        
+        // Display using Iterator
+        Iterator<String> it = list.iterator();
+        while (it.hasNext()) {
+            System.out.println(it.next());
+        }
+    }
+}
+
+Q2. Create a JSP page, which accepts user name in a text box and greets the user 
+according to the time on server side.  
+ 
+Example: If user name is Admin 
+Output: If it is morning then display message in red color as,  
+Good morning Admin  
+Today’s date: dd/mm/yyyy format  
+Current time: hh:mm:ss format  
+ 
+If it is afternoon then display message in green color as,  
+Good afternoon Admin  
+Today’s date: dd/mm/yyyy format  
+Current time: hh:mm:ss format  
+ 
+If it is evening then display message in blue color as,  
+Good evening Admin  
+Today’s date: dd/mm/yyyy format  
+Current time: hh:mm:ss format  
+
+<%@ page import="java.time.*, java.time.format.*" %>
+<form>
+    Name: <input type="text" name="u" required> 
+    <input type="submit" value="Greet">
+</form>
+
+<% 
+    String u = request.getParameter("u");
+    if (u != null) {
+        LocalDateTime now = LocalDateTime.now();
+        int h = now.getHour();
+        
+        String color = h < 12 ? "red" : h < 17 ? "green" : "blue";
+        String greet = h < 12 ? "morning" : h < 17 ? "afternoon" : "evening";
+        
+        out.print("<div style='color:" + color + ";'>");
+        out.print("<h3>Good " + greet + " " + u + "</h3>");
+        out.print("Today’s date: " + now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "<br>");
+        out.print("Current time: " + now.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        out.print("</div>");
+    }
+%>
+
+SLIP-21
+
+Q1. Write a java program to accept names of ‘n’ cities, insert same into array list collection 
+and display the contents of same ArrayList. Display cities using Iterator interface. 
+
+import java.util.*;
+
+public class CityIterator {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        ArrayList<String> cities = new ArrayList<>();
+        
+        System.out.print("Enter N, then N city names: ");
+        for (int n = sc.nextInt(); n > 0; n--) cities.add(sc.next());
+        
+        System.out.print("Cities: ");
+        Iterator<String> it = cities.iterator();
+        while (it.hasNext()) System.out.print(it.next() + " ");
+        
+        sc.close();
+    }
+}
+
+Q2. Write a Servlet program to display number of times user has visited the page. (Use 
+cookies)  
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+
+@WebServlet("/visit")
+public class VisitCounter extends HttpServlet {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        int count = 1;
+        if (req.getCookies() != null) 
+            for (Cookie c : req.getCookies()) 
+                if (c.getName().equals("v")) count = Integer.parseInt(c.getValue()) + 1;
+        
+        res.addCookie(new Cookie("v", count + ""));
+        res.getWriter().print("Total Visits: " + count);
+    }
+}
+
+SLIP 22
+
+Q1. Write a JSP program to accept Name and Age of Voter and check whether he is eligible 
+for voting or not.
+
+<form>
+    Name: <input name="n" required> 
+    Age: <input type="number" name="a" required>
+    <input type="submit" value="Check">
+</form>
+
+<%
+    String n = request.getParameter("n"), a = request.getParameter("a");
+    if (a != null) {
+        out.print("<h3>" + n + " is " + (Integer.parseInt(a) >= 18 ? "Eligible" : "Not Eligible") + " for voting.</h3>");
+    }
+%>
+
+Q2. Consider a table as District (Name, area, population). Write a JDBC program to 
+implement search and delete operations on a District table. 
+
+CREATE TABLE District (Name VARCHAR(50) PRIMARY KEY, area DOUBLE, population INT);
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class DistrictDB {
+    public static void main(String[] args) throws Exception {
+        // Connect to Database
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        Scanner sc = new Scanner(System.in);
+        Statement st = con.createStatement();
+        
+        // 1. Search Operation
+        System.out.print("Enter District Name to Search: ");
+        ResultSet rs = st.executeQuery("SELECT * FROM District WHERE Name = '" + sc.next() + "'");
+        while (rs.next()) 
+            System.out.println("Found: " + rs.getString(1) + " | Area: " + rs.getDouble(2) + " | Pop: " + rs.getInt(3));
+        
+        // 2. Delete Operation
+        System.out.print("\nEnter District Name to Delete: ");
+        int deleted = st.executeUpdate("DELETE FROM District WHERE Name = '" + sc.next() + "'");
+        System.out.println("Records Deleted: " + deleted);
+        
+        con.close();
+        sc.close();
+    }
+}
+
+SLIP-23
+
+Q1.  Write a servlet program to accept username and display message as “Have a Nice 
+day!!!” with username.
+
+<form action="greet">
+    Name: <input type="text" name="user" required>
+    <input type="submit" value="Submit">
+</form>
+
+// Servlet Code
+import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+@WebServlet("/greet")
+public class GreetServlet extends HttpServlet {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("text/html");
+        res.getWriter().print("<h3>Have a Nice day!!! " + req.getParameter("user") + "</h3>");
+    }
+}
+
+Q2.  Create table Emp(ENo EName Salary). Write a JDBC program to delete the details of 
+employee on the basis of employee number. Accept employee number through 
+command line. Display all the details of employees. 
+
+CREATE TABLE Emp (ENo INT PRIMARY KEY, EName VARCHAR(50), Salary DOUBLE);
+
+import java.sql.*;
+
+public class EmpDB {
+    public static void main(String[] args) throws Exception {
+        if (args.length == 0) return; // Exit if no command line argument
+        
+        // Connect to Database
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        Statement st = con.createStatement();
+        
+        // Delete employee using command line argument (args[0])
+        st.executeUpdate("DELETE FROM Emp WHERE ENo = " + args[0]);
+        System.out.println("Employee " + args[0] + " deleted.\n--- All Employees ---");
+        
+        // Display remaining employees
+        ResultSet rs = st.executeQuery("SELECT * FROM Emp");
+        while (rs.next()) 
+            System.out.println(rs.getInt(1) + " | " + rs.getString(2) + " | " + rs.getDouble(3));
+        
+        con.close();
+    }
+}
+
+SLIP-24
+
+Q1. Write program to create a link list of integer objects. Perform following operations on 
+link list. 
+ i. Add element at first position 
+ ii. Display the size of link list
+
+import java.util.LinkedList;
+
+public class LinkedListDemo {
+    public static void main(String[] args) {
+        LinkedList<Integer> list = new LinkedList<>();
+        
+        // i. Add element at first position
+        list.addFirst(50); 
+        
+        // ii. Display the size of link list
+        System.out.println("Size: " + list.size());
+    }
+}
+
+Q2. Write a Servlet program to display number of times user has visited the page.  
+(Use Session) 
+
+import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+@WebServlet("/visit")
+public class VisitCounter extends HttpServlet {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        HttpSession s = req.getSession();
+        Integer c = (Integer) s.getAttribute("v");
+        
+        s.setAttribute("v", c = (c == null) ? 1 : c + 1);
+        res.getWriter().print("Total Visits: " + c);
+    }
+}
+
+SLIP-25
+
+Q1. Write JDBC program to check database connection to Emp table (Eno, ename, salary). 
+Display appropriate message.  
+
+import java.sql.*;
+
+public class CheckConn {
+    public static void main(String[] args) {
+        try {
+            Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+            c.createStatement().executeQuery("SELECT 1 FROM Emp"); // Checks if Emp table is accessible
+            System.out.println("Connection to database and Emp table successful!");
+        } catch (Exception e) {
+            System.out.println("Connection failed: " + e.getMessage());
+        }
+    }
+}
+
+Q2. Write a servlet program to display IP address, browser type, current date and time of 
+server. 
+
+import java.io.IOException;
+import java.util.Date;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+@WebServlet("/info")
+public class ServerInfo extends HttpServlet {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.getWriter().println("IP Address: " + req.getRemoteAddr());
+        res.getWriter().println("Browser: " + req.getHeader("User-Agent"));
+        res.getWriter().println("Server Time: " + new Date());
+    }
+}
