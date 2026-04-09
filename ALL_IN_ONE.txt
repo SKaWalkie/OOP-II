@@ -1,0 +1,134 @@
+Here is your ultimate, bare-minimum survival guide for the exam. I have compressed every major concept and curveball into the shortest possible code blocks. 
+
+Memorize these, and swap out the variable names or SQL queries based on what the slip asks.
+
+### 1. The Universal JDBC Template (Handles Select, Insert, Update, Delete)
+```java
+import java.sql.*;
+
+public class DB {
+    public static void main(String[] args) throws Exception {
+        Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        Statement s = c.createStatement();
+        
+        // FOR SEARCH/DISPLAY:
+        ResultSet rs = s.executeQuery("SELECT * FROM table_name");
+        while(rs.next()) System.out.println(rs.getString(1) + " " + rs.getString(2));
+        
+        // FOR INSERT/UPDATE/DELETE (Uncomment to use):
+        // s.executeUpdate("DELETE FROM table_name WHERE id=1");
+        
+        c.close();
+    }
+}
+```
+
+### 2. The JDBC MetaData Template (For Slips 8 & 10)
+```java
+import java.sql.*;
+
+public class Meta {
+    public static void main(String[] args) throws Exception {
+        Connection c = DriverManager.getConnection("jdbc:mysql://localhost:3306/db", "root", "pass");
+        
+        // Gets column details in one line
+        ResultSetMetaData m = c.createStatement().executeQuery("SELECT * FROM tab").getMetaData();
+        for(int i = 1; i <= m.getColumnCount(); i++) {
+            System.out.println(m.getColumnName(i) + " - " + m.getColumnTypeName(i));
+        }
+    }
+}
+```
+
+### 3. The Universal Servlet Template (Handles Forms + Sessions)
+```java
+import java.io.*; 
+import javax.servlet.annotation.*; 
+import javax.servlet.http.*;
+
+@WebServlet("/app")
+public class Web extends HttpServlet {
+    public void doGet(HttpServletRequest rq, HttpServletResponse rs) throws IOException {
+        rs.setContentType("text/html");
+        
+        // 1. FOR HTML FORMS:
+        String val = rq.getParameter("input_name");
+        
+        // 2. FOR SESSION/VISIT COUNT (Slips 12, 21, 24):
+        HttpSession s = rq.getSession(); 
+        Integer count = (Integer) s.getAttribute("v"); 
+        s.setAttribute("v", count == null ? 1 : count + 1);
+        
+        rs.getWriter().print("<h3>Output: " + val + " | Visits: " + s.getAttribute("v") + "</h3>");
+    }
+}
+```
+
+### 4. The Universal Thread Template (Console loops)
+```java
+public class Thrd extends Thread {
+    public void run() {
+        try { 
+            // Change loop to A-Z or 100-1 based on question
+            for(int i = 1; i <= 5; i++) { 
+                System.out.println(i); 
+                Thread.sleep(1000); // 1000ms = 1 sec
+            } 
+        } catch(Exception e) {}
+    }
+    
+    public static void main(String[] args) { 
+        new Thrd().start(); 
+    }
+}
+```
+
+### 5. The Thread + UI Curveball Template (For Slips 4, 11, 15)
+```java
+import javax.swing.*;
+
+public class UIThread {
+    public static void main(String[] args) {
+        JFrame f = new JFrame(); 
+        JTextField t = new JTextField(10); 
+        JButton b = new JButton("Start");
+        
+        // Thread runs when button is clicked
+        b.addActionListener(e -> new Thread(() -> {
+            try { 
+                for(int i = 1; i <= 100; i++) { 
+                    t.setText("" + i); // Update text box
+                    Thread.sleep(500); 
+                } 
+            } catch(Exception ex) {}
+        }).start());
+        
+        f.add(t); f.add(b); 
+        f.setLayout(new java.awt.FlowLayout()); 
+        f.setSize(200, 100); 
+        f.setVisible(true);
+    }
+}
+```
+
+### 6. The Universal Collections Template (Handles Iterators + Command Line)
+```java
+import java.util.*;
+
+public class Col {
+    public static void main(String[] args) {
+        // FOR COMMAND LINE ARGS (Slips 20, 23):
+        // List<String> list = new ArrayList<>(Arrays.asList(args));
+        
+        // FOR NORMAL INPUT:
+        List<String> list = new ArrayList<>(Arrays.asList("Apple", "Banana"));
+        
+        Iterator<String> it = list.iterator();
+        while(it.hasNext()) {
+            System.out.println(it.next());
+        }
+    }
+}
+```
+
+**Final Advice:** If you write these codes down and just plug in the right SQL query or `for` loop depending on what the slip asks, you will secure the marks you need. Good luck!
