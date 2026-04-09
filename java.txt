@@ -447,6 +447,19 @@ public class Friends {
    Q2. Write a Java program to display information about all columns in the DONAR table 
 using ResultSetMetaData.
 
+CREATE TABLE DONAR (
+    DonarID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    BloodGroup VARCHAR(5),
+    Age INT,
+    City VARCHAR(50)
+);
+
+INSERT INTO DONAR VALUES 
+(1, 'Rahul Sharma', 'O+', 25, 'Pune'),
+(2, 'Priya Singh', 'A+', 30, 'Mumbai'),
+(3, 'Amit Patil', 'B-', 22, 'Delhi');
+
      import java.sql.*;
 
 public class DonarMeta {
